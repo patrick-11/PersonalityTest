@@ -16,9 +16,9 @@ const header = (props: any) => {
 
 				<Navbar.Collapse>
 					<Nav className = "me-auto">
-						<Nav.Link as = {Link} to = "/PersonalityTest/Test">Test</Nav.Link>
-						<Nav.Link as = {Link} to = "/PersonalityTest/Results">Results</Nav.Link>
-						<Nav.Link as = {Link} to = "/PersonalityTest/Search">Search</Nav.Link>
+						<Nav.Link as = {Link} to = "/Test">Test</Nav.Link>
+						<Nav.Link as = {Link} to = "/Results">Results</Nav.Link>
+						<Nav.Link as = {Link} to = "/Search">Search</Nav.Link>
 					</Nav>
 
 					<Nav>

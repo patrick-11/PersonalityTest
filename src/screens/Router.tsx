@@ -23,7 +23,7 @@ const router = (props: AppProps) => {
 			/>
 
 			<Switch>
-				<Route path = "/PersonalityTest/Test">
+				<Route path = "/Test">
 					<Test
 						inTest = {props.inTest}
 						profile = {props.profile}
@@ -37,13 +37,13 @@ const router = (props: AppProps) => {
 					/>
 				</Route>
 
-				<Route path = "/PersonalityTest/Results">
+				<Route path = "/Results">
 					<Result
 						users = {props.users}
 					/>
 				</Route>
 
-				<Route path = "/PersonalityTest/Search">
+				<Route path = "/Search">
 					<Search
 						users = {props.users}
 					/>

@@ -52,7 +52,7 @@ const Home = (props: UsersProps) => {
 							<div className="d-grid gap-2">
 								<Button
 									size="lg"
-									onClick={() => redirectAction("test")}
+									onClick={() => redirectAction("Test")}
 								>
 									Take Test
 								</Button>
@@ -70,7 +70,7 @@ const Home = (props: UsersProps) => {
 							<div className="d-grid gap-2">
 								<Button
 									size="lg"
-									onClick={() => redirectAction("Result")}
+									onClick={() => redirectAction("Results")}
 								>
 									Check Results
 								</Button>
@@ -88,7 +88,7 @@ const Home = (props: UsersProps) => {
 							<div className="d-grid gap-2">
 								<Button
 									size="lg"
-									onClick={() => redirectAction("search")}
+									onClick={() => redirectAction("Search")}
 								>
 									Search Results
 								</Button>
