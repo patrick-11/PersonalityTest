@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/PersonalityTest/static/js/main.96996aa4.chunk.js",
-    "main.js.map": "/PersonalityTest/static/js/main.96996aa4.chunk.js.map",
+    "main.js": "/PersonalityTest/static/js/main.e13274e9.chunk.js",
+    "main.js.map": "/PersonalityTest/static/js/main.e13274e9.chunk.js.map",
     "runtime-main.js": "/PersonalityTest/static/js/runtime-main.7be5217c.js",
     "runtime-main.js.map": "/PersonalityTest/static/js/runtime-main.7be5217c.js.map",
     "static/css/2.f2512455.chunk.css": "/PersonalityTest/static/css/2.f2512455.chunk.css",
@@ -15,6 +15,6 @@
     "static/js/runtime-main.7be5217c.js",
     "static/css/2.f2512455.chunk.css",
     "static/js/2.e1ba71d1.chunk.js",
-    "static/js/main.96996aa4.chunk.js"
+    "static/js/main.e13274e9.chunk.js"
   ]
 }
