@@ -3,7 +3,7 @@ import React from 'react';
 
 import Router from "./screens/Router";
 import RegisterModal from "./components/registerModal";
-import { Profile } from "./types/interfaces";
+import { Profile } from "./types/interfacesRouter";
 import data from "./data/users";
 
 

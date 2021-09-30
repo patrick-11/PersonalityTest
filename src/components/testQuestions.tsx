@@ -3,8 +3,10 @@ import React, { useState, useEffect } from "react";
 
 import { Button, Row, Col, ButtonGroup, ToggleButton } from "react-bootstrap";
 
+import { TestQuestionsProps } from "../types/interfacesTest";
 
-const TestQuestions = (props: any) => {
+
+const TestQuestions = (props: TestQuestionsProps) => {
 	const questions = [
 		"Extraverted, enthusiastic.", 
 		"Critical, quarrelsome.", 

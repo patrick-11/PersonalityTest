@@ -4,8 +4,10 @@ import React from "react";
 import { Navbar, Container, Nav, Button, NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
+import { HeaderProps } from "../types/interfacesRouter";
 
-const header = (props: any) => {
+
+const header = (props: HeaderProps) => {
 	const title = "Logged in as: " + props.profile.username;
 
 	return (

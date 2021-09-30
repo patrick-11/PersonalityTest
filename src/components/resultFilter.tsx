@@ -3,8 +3,10 @@ import React, { useState } from "react";
 
 import { Container, Row, Col, Form, FormGroup, FormLabel, ToggleButtonGroup, ToggleButton, InputGroup } from "react-bootstrap";
 
+import { ResultFilterProps } from "../types/interfacesResult";
 
-const ResultFilter = (props: any) => {
+
+const ResultFilter = (props: ResultFilterProps) => {
 	const [gender, setGender] = useState(["Male", "Female"])
 	const [age, setAge] = useState({minAge: "5", maxAge: "120"})
 
@@ -12,7 +14,7 @@ const ResultFilter = (props: any) => {
 		setGender(gender)
 		props.onChangeFilter(gender, age)
 	}
-
+	
 	const onCreateProfileChange = (event: any) => {
 		event.persist()
 		setAge((prevAge) => ({...prevAge, [event.target.name]: event.target.value}))

@@ -3,8 +3,10 @@ import React from "react";
 
 import { Button } from "react-bootstrap";
 
+import { TestStartProps } from "../types/interfacesTest";
 
-const TestStart = (props: any) => {
+
+const TestStart = (props: TestStartProps) => {
 	return (
 		<div className="text-center">
 			<Button

@@ -7,7 +7,7 @@ import TestStart from "../components/testStart";
 import TestQuestions from "../components/testQuestions";
 import RadarChart from "../components/radarChart";
 
-import { TestProps } from "../types/interfaces";
+import { TestProps } from "../types/interfacesTest";
 
 
 const Test = (props: TestProps) => {
@@ -30,9 +30,6 @@ const Test = (props: TestProps) => {
 						<div className="text-center">
 							<RadarChart
 								results = {props.results}
-								onInTestChange = {props.onInTestChange}
-								onAnswersChange = {props.onAnswersChange}
-								onResultShow = {props.onResultShow}
 							/>
 							<hr/>
 							<Button

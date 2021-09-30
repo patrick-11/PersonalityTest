@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 import { Button, Form, Modal, InputGroup, FormControl, FormGroup, FormLabel, Alert, ButtonGroup, ToggleButton} from "react-bootstrap";
 
-import { RegisterModalProps } from "../types/interfaces";
+import { RegisterModalProps } from "../types/interfacesApp";
 
 
 const RegisterModal = (props: RegisterModalProps) => {

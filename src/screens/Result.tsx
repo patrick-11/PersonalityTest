@@ -5,7 +5,8 @@ import { Container } from "react-bootstrap";
 
 import RadarChart from "../components/radarChart";
 import ResultFilter from "../components/resultFilter";
-import { UsersProps, User } from "../types/interfaces";
+import { UsersProps, User } from "../types/interfacesRouter";
+import { AgeRange } from "../types/interfacesResult";
 
 
 const Result = (props: UsersProps) => {
@@ -28,8 +29,8 @@ const Result = (props: UsersProps) => {
 		return results
 	}
 
-	const onChangeFilter = (gender: Array<"Male" | "Female">, age: {minAge: number, maxAge: number}) => {
-		const usersFiltered = props.users.filter((user) => gender.includes(user.gender) && age.minAge <= user.age && user.age<= age.maxAge)
+	const onChangeFilter = (gender: Array<string>, age: AgeRange) => {
+		const usersFiltered = props.users.filter((user) => gender.includes(user.gender) && Number(age.minAge) <= user.age && user.age<= Number(age.maxAge))
 		setFiltered(usersFiltered)
 	}
 

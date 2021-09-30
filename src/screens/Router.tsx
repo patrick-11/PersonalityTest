@@ -9,10 +9,10 @@ import Test from "./Test";
 import Result from "./Result";
 import Search from "./Search";
 
-import { AppProps } from "../types/interfaces";
+import { RouterProps } from "../types/interfacesRouter";
 
 
-const router = (props: AppProps) => {
+const router = (props: RouterProps) => {
 	return (
 		<Router>
 			<Header

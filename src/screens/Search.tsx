@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { Container, Button, Form, InputGroup, FormControl, FormGroup, FormLabel, Alert} from "react-bootstrap";
 
 import RadarChart from "../components/radarChart";
-import { UsersProps } from "../types/interfaces";
+import { UsersProps } from "../types/interfacesRouter";
 
 
 const Search = (props: UsersProps) => {

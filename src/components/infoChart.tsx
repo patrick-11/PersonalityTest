@@ -3,10 +3,10 @@ import React from "react";
 
 import { Container, Col, Row } from "react-bootstrap";
 
-import { InfoProps } from "../types/interfaces";
+import { InfoChartProps } from "../types/interfacesHome";
 
 
-const infoChart = (props: InfoProps) => {
+const infoChart = (props: InfoChartProps) => {
 	return (
 		<Container>
 			<Row>

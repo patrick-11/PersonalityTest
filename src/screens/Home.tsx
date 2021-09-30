@@ -5,7 +5,7 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useHistory } from "react-router";
 
 import InfoChart from "../components/infoChart";
-import { UsersProps } from "../types/interfaces";
+import { UsersProps } from "../types/interfacesRouter";
 
 
 const Home = (props: UsersProps) => {
