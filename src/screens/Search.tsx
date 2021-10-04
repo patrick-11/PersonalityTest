@@ -4,19 +4,21 @@ import React, { useState } from "react";
 import { Container, Button, Form, InputGroup, FormControl, FormGroup, FormLabel, Alert} from "react-bootstrap";
 
 import RadarChart from "../components/radarChart";
-import { UsersProps } from "../types/interfacesRouter";
+import SearchInfo from "../components/searchInfo";
+import { User, UsersProps } from "../types/interfacesRouter";
 
 
 const Search = (props: UsersProps) => {
+
+	const [user, setUser] = useState<User | null>(null)
 	const [username, setUsername] = useState<string>("")
-	const [results, setResults] = useState<Array<number>>([])
 	const [searchFailed, setSearchFailed] = useState<boolean>(false)
 
 	const searchUsersResults = () => {
 		const user = props.users.find((user) => (user.name === username))
 		if(user !== undefined) {
 			setSearchFailed(false)
-			setResults(user.results)
+			setUser(user)
 		}
 		else {setSearchFailed(true)}
 	}
@@ -28,6 +30,7 @@ const Search = (props: UsersProps) => {
 					<h2>Search Results of Participants</h2>
 				</div>
 			<hr/>
+			<Container>
 				<Form>
 					<FormGroup>
 						<FormLabel>Username:</FormLabel>
@@ -45,7 +48,7 @@ const Search = (props: UsersProps) => {
 								disabled = {!username.length}
 								onClick = {() => {
 									setUsername("")
-									setResults([])
+									setUser(null)
 									setSearchFailed(false)
 								}}
 							>
@@ -67,15 +70,24 @@ const Search = (props: UsersProps) => {
 						}
 					</FormGroup>
 				</Form>
+			</Container>
 			<hr/>
 			{
 				searchFailed ?
 				<Alert variant = "danger">This username does not exist!</Alert>
 				:
-				results.length ?
-					<RadarChart
-						results = {results}
-					/>
+				user !== null ?
+					<>
+						<SearchInfo
+							gender = {user.gender}
+							age = {user.age}
+							avgScore = {user.avgScore}
+						/>
+						<hr/>
+						<RadarChart
+							results = {user.results}
+						/>
+					</>
 					:
 					<></>
 			}
