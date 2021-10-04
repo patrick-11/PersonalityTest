@@ -1,9 +1,5 @@
-export interface InfoChartProps {
-	info: Info;
-}
+import { Info } from "./interfacesRouter";
 
-type Info = {
-	testCount: number;
-	avgScore: number;
-	sdScore: number;
+export interface HomeInfoProps {
+	info: Info;
 }

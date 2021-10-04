@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { useHistory } from "react-router";
 
-import InfoChart from "../components/infoChart";
+import InfoChart from "../components/homeInfo";
 import { UsersProps } from "../types/interfacesRouter";
 
 
@@ -41,62 +41,64 @@ const Home = (props: UsersProps) => {
 			/>
 			<hr/>
 			
-			<Row>
-				<Col md={4}>
-					<Card>
-						<Card.Header>
-							<h4 className="text-center">Test</h4>
-						</Card.Header>
-						<Card.Body>
-							<p>Take the Ten-Item Personality Inventory-(TIPI) test and receive your result.</p>
-							<div className="d-grid gap-2">
-								<Button
-									size="lg"
-									onClick={() => redirectAction("Test")}
-								>
-									Take Test
-								</Button>
-							</div>
-						</Card.Body>
-					</Card>
-				</Col>
-				<Col md={4}>
-					<Card>
-						<Card.Header>
-							<h4 className="text-center">Results</h4>
-						</Card.Header>
-						<Card.Body>
-							<p>See the average result of all participants which have concluded this test.</p>
-							<div className="d-grid gap-2">
-								<Button
-									size="lg"
-									onClick={() => redirectAction("Results")}
-								>
-									Check Results
-								</Button>
-							</div>
-						</Card.Body>
-					</Card>
-				</Col>
-				<Col md={4}>
-					<Card>
-						<Card.Header>
-							<h4 className="text-center">Search</h4>
-						</Card.Header>
-						<Card.Body>
-							<p>Search the individual result of participants which have concluded this test.</p>
-							<div className="d-grid gap-2">
-								<Button
-									size="lg"
-									onClick={() => redirectAction("Search")}
-								>
-									Search Results
-								</Button>
-							</div>
-						</Card.Body>
-					</Card>
-				</Col>
-			</Row>
+			<Container>
+				<Row>
+					<Col md={4}>
+						<Card>
+							<Card.Header>
+								<h4 className="text-center">Test</h4>
+							</Card.Header>
+							<Card.Body>
+								<p>Take the Ten-Item Personality Inventory-(TIPI) test and receive your result.</p>
+								<div className="d-grid gap-2">
+									<Button
+										size="lg"
+										onClick={() => redirectAction("Test")}
+									>
+										Take Test
+									</Button>
+								</div>
+							</Card.Body>
+						</Card>
+					</Col>
+					<Col md={4}>
+						<Card>
+							<Card.Header>
+								<h4 className="text-center">Results</h4>
+							</Card.Header>
+							<Card.Body>
+								<p>See the average result of all participants which have concluded this test.</p>
+								<div className="d-grid gap-2">
+									<Button
+										size="lg"
+										onClick={() => redirectAction("Results")}
+									>
+										Check Results
+									</Button>
+								</div>
+							</Card.Body>
+						</Card>
+					</Col>
+					<Col md={4}>
+						<Card>
+							<Card.Header>
+								<h4 className="text-center">Search</h4>
+							</Card.Header>
+							<Card.Body>
+								<p>Search the individual result of participants which have concluded this test.</p>
+								<div className="d-grid gap-2">
+									<Button
+										size="lg"
+										onClick={() => redirectAction("Search")}
+									>
+										Search Results
+									</Button>
+								</div>
+							</Card.Body>
+						</Card>
+					</Col>
+				</Row>
+			</Container>
 			<hr/>
 		</Container>
 	)

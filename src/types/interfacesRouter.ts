@@ -41,3 +41,9 @@ export type Profile = {
 	gender: string;
 	age: number;
 };
+
+export type Info = {
+	testCount: number;
+	avgScore: number;
+	sdScore: number;
+}
