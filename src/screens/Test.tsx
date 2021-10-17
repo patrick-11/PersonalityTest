@@ -1,13 +1,14 @@
-import React from "react";
+import React from "react"
 
 
-import { Container, Button } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap"
 
-import TestStart from "../components/testStart";
-import TestQuestions from "../components/testQuestions";
-import RadarChart from "../components/radarChart";
+import TestStart from "../components/testStart"
+import TestQuestions from "../components/testQuestions"
+import SearchInfo from "../components/searchInfo"
+import RadarChart from "../components/radarChart"
 
-import { TestProps } from "../types/interfacesTest";
+import { TestProps } from "../types/interfacesTest"
 
 
 const Test = (props: TestProps) => {
@@ -19,32 +20,38 @@ const Test = (props: TestProps) => {
 				</div>
 			<hr/>
 				{props.inTest ?
-					!props.resultShow ?
+					props.user.results.length === 0 ?
 						<TestQuestions
-							answers = {props.answers}
+							user = {props.user}
 							onInTestChange = {props.onInTestChange}
-							onAnswersChange = {props.onAnswersChange}
-							onResultShow = {props.onResultShow}
+							onUserChange = {props.onUserChange}
 						/>
 						:
-						<div className="text-center">
-							<RadarChart
-								results = {props.results}
+						<>
+							<SearchInfo
+									gender = {props.user.gender}
+									age = {props.user.age}
+									avgScore = {props.user.avgScore}
 							/>
 							<hr/>
-							<Button
-								onClick = {() => {
-									props.onResultShow(false)
-									props.onInTestChange(false)
-									props.onAnswersChange([])
-								}}
-							>
-								Finish
-							</Button>
-						</div>
+							<RadarChart
+								results = {props.user.results}
+							/>
+							<hr/>
+							<div className="text-center">
+								<Button
+									onClick = {() => {
+										props.onInTestChange(false)
+										props.onUserChange("finish", null)
+									}}
+								>
+									Finish
+								</Button>
+							</div>
+						</>
 					:
 					<TestStart
-						profile = {props.profile}
+						user = {props.user}
 						onInTestChange = {props.onInTestChange}
 						onRegisterShow = {props.onRegisterShow}
 					/>
@@ -54,4 +61,4 @@ const Test = (props: TestProps) => {
 	)
 }
 
-export default Test;
+export default Test

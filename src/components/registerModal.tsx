@@ -1,23 +1,24 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 
-import { Button, Form, Modal, InputGroup, FormControl, FormGroup, FormLabel, Alert, ButtonGroup, ToggleButton} from "react-bootstrap";
+import { Button, Form, Modal, InputGroup, FormControl, FormGroup, FormLabel, Alert, ButtonGroup, ToggleButton} from "react-bootstrap"
 
-import { RegisterModalProps } from "../types/interfacesApp";
+import { RegisterModalProps } from "../types/interfacesApp"
 
 
 const RegisterModal = (props: RegisterModalProps) => {
-	const genderOptions = ["Male", "Female"];
-	const [profile, setProfile] = useState({username: "", gender: "", age: 50})
+	const genderOptions = ["Male", "Female"]
+	const [profile, setProfile] = useState({name: "", gender: "", age: 50})
 
-	const onCreateUsernameDelete = () => {
-		setProfile((prevProfile) => ({...prevProfile, "username": ""}))
-	}
 
 	const onCreateProfileChange = (event: any) => {
 		event.persist()
 		setProfile((prevProfile) => ({...prevProfile, [event.target.name]: event.target.value}))
 	}
+
+	const onCreateNameDelete = () => {setProfile((prevProfile) => ({...prevProfile, name: ""}))}
+
+	const onCreateProfileReset = () => {setProfile({name: "", gender: "", age: 50})}
 
 	return (
 		<Modal show = {props.registerShow} onHide = {() => props.onRegisterShow(false)}>
@@ -40,20 +41,20 @@ const RegisterModal = (props: RegisterModalProps) => {
 							<FormControl
 								placeholder = "Username"
 								type = "text"
-								name = "username"
-								value = {profile.username}
+								name = "name"
+								value = {profile.name}
 								onChange = {onCreateProfileChange}
 							/>
 
 							<Button
 								variant = "outline-secondary"
-								disabled = {!profile.username.length}
-								onClick = {onCreateUsernameDelete}
+								disabled = {!profile.name.length}
+								onClick = {onCreateNameDelete}
 							>
 								X
 							</Button>
 						</InputGroup>
-						{profile.username.length > 10 ?
+						{profile.name.length > 10 ?
 							<Form.Text>Maximum 10 Characters!</Form.Text>
 							:
 							<></>
@@ -106,13 +107,13 @@ const RegisterModal = (props: RegisterModalProps) => {
 					</Button>
 					<Button
 						disabled = {
-							!profile.username.length ||
-							profile.username.length > 10 ||
+							!profile.name.length ||
+							profile.name.length > 10 ||
 							!profile.gender.length
 						}
 						onClick = {() => {
-							props.onRegister(profile.username)
-							onCreateUsernameDelete()
+							props.onRegister(profile)
+							onCreateProfileReset()
 						}}
 					>
 						Register
@@ -122,4 +123,4 @@ const RegisterModal = (props: RegisterModalProps) => {
 	)
 }
 
-export default RegisterModal;
+export default RegisterModal

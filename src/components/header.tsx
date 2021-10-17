@@ -1,14 +1,14 @@
-import React from "react";
+import React from "react"
 
 
-import { Navbar, Container, Nav, Button, NavDropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Navbar, Container, Nav, Button, NavDropdown } from "react-bootstrap"
+import { Link } from "react-router-dom"
 
-import { HeaderProps } from "../types/interfacesRouter";
+import { HeaderProps } from "../types/interfacesRouter"
 
 
 const header = (props: HeaderProps) => {
-	const title = "Logged in as: " + props.profile.username;
+	const title = "Logged in as: " + props.user.name
 
 	return (
 		<Navbar expand = "md" bg = "secondary" variant = "dark">
@@ -24,7 +24,7 @@ const header = (props: HeaderProps) => {
 					</Nav>
 
 					<Nav>
-						{props.profile.username.length ?
+						{props.user.name.length ?
 							props.inTest ?
 								<>
 								<Nav.Link as = {Link} to = "/test">My Test</Nav.Link>
@@ -46,4 +46,4 @@ const header = (props: HeaderProps) => {
 	)
 }
 
-export default header;
+export default header

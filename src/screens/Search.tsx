@@ -1,18 +1,20 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 
-import { Container, Button, Form, InputGroup, FormControl, FormGroup, FormLabel, Alert} from "react-bootstrap";
+import { Container, Button, Form, InputGroup, FormControl, FormGroup, FormLabel, Alert} from "react-bootstrap"
 
-import RadarChart from "../components/radarChart";
-import SearchInfo from "../components/searchInfo";
-import { User, UsersProps } from "../types/interfacesRouter";
+import RadarChart from "../components/radarChart"
+import SearchInfo from "../components/searchInfo"
+
+import { UsersProps } from "../types/interfacesRouter"
+import { User } from "../types/interfacesRouter"
 
 
 const Search = (props: UsersProps) => {
-
 	const [user, setUser] = useState<User | null>(null)
 	const [username, setUsername] = useState<string>("")
 	const [searchFailed, setSearchFailed] = useState<boolean>(false)
+
 
 	const searchUsersResults = () => {
 		const user = props.users.find((user) => (user.name === username))
@@ -22,6 +24,7 @@ const Search = (props: UsersProps) => {
 		}
 		else {setSearchFailed(true)}
 	}
+
 
 	return (
 		<Container>
@@ -95,4 +98,4 @@ const Search = (props: UsersProps) => {
 	)
 }
 
-export default Search;
+export default Search

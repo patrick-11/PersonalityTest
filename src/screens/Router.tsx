@@ -1,15 +1,15 @@
-import React from "react";
+import React from "react"
 
 
-import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom"
 
-import Header from "../components/header";
-import Home from "./Home";
-import Test from "./Test";
-import Result from "./Result";
-import Search from "./Search";
+import Header from "../components/header"
+import Home from "./Home"
+import Test from "./Test"
+import Result from "./Result"
+import Search from "./Search"
 
-import { RouterProps } from "../types/interfacesRouter";
+import { RouterProps } from "../types/interfacesRouter"
 
 
 const router = (props: RouterProps) => {
@@ -17,7 +17,7 @@ const router = (props: RouterProps) => {
 		<Router>
 			<Header
 				inTest = {props.inTest}
-				profile = {props.profile}
+				user = {props.user}
 				onLogout = {props.onLogout}
 				onRegisterShow = {props.onRegisterShow}
 			/>
@@ -26,13 +26,9 @@ const router = (props: RouterProps) => {
 				<Route path = "/Test">
 					<Test
 						inTest = {props.inTest}
-						profile = {props.profile}
-						answers = {props.answers}
-						results = {props.results}
-						resultShow = {props.resultShow}
+						user = {props.user}
+						onUserChange = {props.onUserChange}
 						onInTestChange = {props.onInTestChange}
-						onAnswersChange = {props.onAnswersChange}
-						onResultShow = {props.onResultShow}
 						onRegisterShow = {props.onRegisterShow}
 					/>
 				</Route>
@@ -63,4 +59,4 @@ const router = (props: RouterProps) => {
 	)
 }
 
-export default router;
+export default router

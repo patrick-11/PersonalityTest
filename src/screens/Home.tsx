@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 
 
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
-import { useHistory } from "react-router";
+import { Container, Row, Col, Card, Button } from "react-bootstrap"
+import { useHistory } from "react-router"
 
-import InfoChart from "../components/homeInfo";
-import { UsersProps } from "../types/interfacesRouter";
+import InfoChart from "../components/homeInfo"
+
+import { UsersProps } from "../types/interfacesRouter"
 
 
 const Home = (props: UsersProps) => {
-	let history = useHistory();
+	let history = useHistory()
 	const redirectAction = (name: string) => {history.push("/" + name)}
 
 	const [info, setInfo] = useState({"testCount": 0, "avgScore": 0, "sdScore": 0})
+
 
 	useEffect(() => {
 		const users = props.users
@@ -22,6 +24,7 @@ const Home = (props: UsersProps) => {
 		const sdScore = Math.sqrt(avgScores.map((x) => (Math.pow(x - avgScore, 2))).reduce((a, b) => (a + b)) / users.length)
 		setInfo({"testCount": users.length, "avgScore": Number(avgScore.toFixed(2)), "sdScore": Number(sdScore.toFixed(2))})
 	}, [props.users])
+
 
 	return (
 		<Container>
@@ -104,4 +107,4 @@ const Home = (props: UsersProps) => {
 	)
 }
 
-export default Home;
+export default Home

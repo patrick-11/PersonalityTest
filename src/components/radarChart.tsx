@@ -1,9 +1,9 @@
-import React from "react";
+import React from "react"
 
 
-import { Radar } from 'react-chartjs-2';
+import { Radar } from 'react-chartjs-2'
 
-import { RadarChartProps } from "../types/interfacesRouter";
+import { RadarChartProps } from "../types/interfacesRouter"
 
 
 const RadarChart = (props: RadarChartProps) => {
@@ -33,4 +33,4 @@ const RadarChart = (props: RadarChartProps) => {
 	)
 }
 
-export default RadarChart;
+export default RadarChart

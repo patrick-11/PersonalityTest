@@ -1,49 +1,45 @@
 export interface RouterProps {
-	users: Array<User>;
-	inTest: boolean;
-	profile: Profile;
-	answers: Array<string>;
-	results: Array<number>;
-	resultShow: boolean;
-	onInTestChange: (state: boolean) => void;
-	onAnswersChange: (answers: Array<string>) => void;
-	onResultShow: (state: boolean) => void;
-	onRegisterShow: (state: boolean) => void;
+	users: Array<User>
+	inTest: boolean
+	user: User
+	onInTestChange: (state: boolean) => void
+	onUserChange: (prop: string, value: any) => void
+	onRegisterShow: (state: boolean) => void
 	onLogout: () => void
-};
+}
 
 export interface HeaderProps {
-	inTest: boolean;
-	profile: Profile;
+	inTest: boolean
+	user: User
 	onLogout: () => void
-	onRegisterShow: (state: boolean) => void;
+	onRegisterShow: (state: boolean) => void
 }
 
 export interface UsersProps {
-	users: Array<User>;
+	users: Array<User>
 }
 
 export interface RadarChartProps {
-	results: Array<number>;
+	results: Array<number>
 }
 
 export interface User {
-	name: string;
-	gender: "Male" | "Female";
-	age: number;
-	answers: Array<number>;
-	results: Array<number>;
-	avgScore: number;
-};
+	name: string
+	gender: string
+	age: number
+	answers: Array<number>
+	results: Array<number>
+	avgScore: number
+}
 
 export type Profile = {
-	username: string;
-	gender: string;
-	age: number;
-};
+	name: string
+	gender: string
+	age: number
+}
 
 export type Info = {
-	testCount: number;
-	avgScore: number;
-	sdScore: number;
+	testCount: number
+	avgScore: number
+	sdScore: number
 }

@@ -1,12 +1,12 @@
-import React from "react";
+import React from "react"
 
 
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap"
 
-import { searchInfoProps } from "../types/interfacesResult";
+import { SearchInfoProps } from "../types/interfacesResult"
 
 
-const searchInfo = (props: searchInfoProps) => {
+const searchInfo = (props: SearchInfoProps) => {
 	return (
 		<Container>
 			<Row>
@@ -24,4 +24,4 @@ const searchInfo = (props: searchInfoProps) => {
 	)
 }
 
-export default searchInfo;
+export default searchInfo

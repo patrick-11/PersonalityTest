@@ -1,9 +1,9 @@
-import React from "react";
+import React from "react"
 
 
-import { Container, Col, Row } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap"
 
-import { HomeInfoProps } from "../types/interfacesHome";
+import { HomeInfoProps } from "../types/interfacesHome"
 
 
 const homeInfo = (props: HomeInfoProps) => {
@@ -24,4 +24,4 @@ const homeInfo = (props: HomeInfoProps) => {
 	)
 }
 
-export default homeInfo;
+export default homeInfo

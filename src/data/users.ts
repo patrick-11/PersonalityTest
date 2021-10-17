@@ -1,4 +1,4 @@
-import User from "../types/user";
+import User from "./user"
 
 let users: Array<User> = []
 
@@ -53,4 +53,9 @@ users.push(new User("Jolie", "Female", 115, [3, 3, 7, 5, 3, 6, 7, 4, 7, 4]))
 users.push(new User("Ella", "Female", 120, [4, 5, 7, 5, 6, 4, 5, 6, 6, 3]))
 users.push(new User("Sara", "Female", 120, [7, 1, 2, 6, 1, 3, 1, 3, 2, 7]))
 
-export default users;
+users.forEach((user) => {
+	user.calculateResults()
+	user.calculateAvgScore()
+})
+
+export default users

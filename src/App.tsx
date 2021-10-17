@@ -1,112 +1,101 @@
-import React from 'react';
+import React, { useEffect, useState } from "react"
 
 
-import Router from "./screens/Router";
-import RegisterModal from "./components/registerModal";
-import { Profile } from "./types/interfacesRouter";
-import data from "./data/users";
+import Router from "./screens/Router"
+import RegisterModal from "./components/registerModal"
+import { Profile } from "./types/interfacesRouter"
+import data from "./data/users"
 
 
-class App extends React.Component {
+const App = () => {
+	const users = data
+	const [inTest, setInTest] = useState(false)
+	const [user, setUser] = useState({name: "", gender: "", age: 50, answers: [], results: [], avgScore: 0})
+	const [registerShow, setRegisterShow] = useState(false)
+	const [registerFail, setRegisterFail] = useState("")
 
-	state = {
-		users: data,
-		inTest: false,
-		profile: {username: "", gender: "", age: 50},
-		answers: [],
-		results: [],
-		resultShow: false,
-		registerShow: false,
-		registerFail: ""
+	
+	useEffect(() => {
+		const tempInTest = JSON.parse(localStorage.getItem("inTest") || "false")
+		const tempUser = JSON.parse(localStorage.getItem("user") || "null")
+		if(tempInTest) {onInTestChange(tempInTest)}
+		if(tempUser !== null) {onUserChange("user", tempUser)}
+	}, [])
+
+	useEffect(() => {localStorage.setItem("inTest", JSON.stringify(inTest))}, [inTest])
+	
+	useEffect(() => {localStorage.setItem("user", JSON.stringify(user))}, [user])
+
+	
+	const onInTestChange = (state: boolean) => {setInTest(state)}
+
+	const onUserChange = (prop: string, value: any) => {
+		switch(prop) {
+
+			case "profile": {
+				setUser((prevUser) => ({...prevUser, name: value.name, gender: value.gender, age: value.age}))
+				break
+			}
+			case "finish": {
+				setUser((prevUser) => ({...prevUser, answers: [], results: [], avgScore: 0}))
+				break
+			}
+			case "reset": {
+				setUser({name: "", gender: "", age: 50, answers: [], results: [], avgScore: 0})
+				break
+			}
+			case "submit": {
+				setUser((prevUser) => ({...prevUser, results: value.results, avgScore: value.avgScore}))
+				break
+			}
+			case "user": {
+				setUser(value)
+				break
+			}
+			default: {
+				setUser((prevUser) => ({...prevUser, [prop]: value}))
+				break
+			}
+		}
+	}
+	
+	const onRegisterShow = (state: boolean) => {setRegisterShow(state)}
+
+	const onRegisterFail = () => {setRegisterFail("")}
+
+	const onRegister = (profile: Profile) => {
+		onUserChange("profile", profile)
+		onRegisterShow(false)
 	}
 
-	componentDidMount = () => {
-		const inTest = JSON.parse(localStorage.getItem("inTest") || "false")
-		const profile = JSON.parse(localStorage.getItem("profile") || "null")
-		const answers = JSON.parse(localStorage.getItem("answers") || "[]")
-		if(inTest) {this.setState({inTest: inTest})}
-		if(profile !== null) {this.setState({profile: profile})}
-		if(answers.length) {this.setState({answers: answers})}
-	}
-
-	onInTestChange = (state: boolean) => {
-		this.setState({inTest: state})
-		localStorage.setItem("inTest", JSON.stringify(state))
-	}
-
-	onProfileChange = (profile: Profile) => {this.setState({profile: profile})}
-
-	onAnswersChange = (answers: Array<string>) => {
-		this.setState({answers: answers})
-		localStorage.setItem("answers", JSON.stringify(answers))
-	}
-
-	onResultShow = (state: boolean) => {
-		this.calculateResults()
-		this.setState({resultShow: state})
-	}
-
-	onResultsChange = (results: Array<number>) => {this.setState({results: results})}
-
-	calculateResults = () => {
-		let temp = []
-		const reverse = (value: string) => {return (8 - Number(value))}
-		temp[0] = (Number(this.state.answers[0]) + reverse(this.state.answers[5]))/2;
-		temp[1] = (Number(this.state.answers[6]) + reverse(this.state.answers[1]))/2;
-		temp[2] = (Number(this.state.answers[2]) + reverse(this.state.answers[7]))/2;
-		temp[3] = (Number(this.state.answers[8]) + reverse(this.state.answers[3]))/2;
-		temp[4] = (Number(this.state.answers[4]) + reverse(this.state.answers[9]))/2;
-		this.onResultsChange(temp)
-	}
-
-	onRegisterShow = (state: boolean) => {this.setState({registerShow: state})}
-
-	onRegisterFail = () => {this.setState({registerFail: ""})}
-
-	onRegister = (username: string) => {
-		let profile = this.state.profile
-		profile.username = username
-		this.onProfileChange(profile)
-		this.onRegisterShow(false)
-		localStorage.setItem("profile", JSON.stringify(profile))
-	}
-
-	onLogout = () => {
-		this.onProfileChange({username: "", gender: "", age: 50})
-		this.onInTestChange(false)
-		this.onAnswersChange([])
-		this.onResultsChange([])
+	const onLogout = () => {
+		onUserChange("reset", null)
+		onInTestChange(false)
 		localStorage.clear()
 	}
+	
+	return (
+		<>
+			<Router
+				users = {users}
+				inTest = {inTest}
+				user = {user}
+				onInTestChange = {onInTestChange}
+				onUserChange = {onUserChange}
+				onRegisterShow = {onRegisterShow}
+				onLogout = {onLogout}
 
-	render = () => {
-		return (
-			<>
-				<Router
-					users = {this.state.users}
-					inTest = {this.state.inTest}
-					profile = {this.state.profile}
-					answers = {this.state.answers}
-					results = {this.state.results}
-					resultShow = {this.state.resultShow}
-					onInTestChange = {this.onInTestChange}
-					onAnswersChange = {this.onAnswersChange}
-					onResultShow = {this.onResultShow}
-					onRegisterShow = {this.onRegisterShow}
-					onLogout = {this.onLogout}
+			/>
 
-				/>
-
-				<RegisterModal
-					registerShow = {this.state.registerShow}
-					registerFail = {this.state.registerFail}
-					onRegisterShow = {this.onRegisterShow}
-					onRegisterFail = {this.onRegisterFail}
-					onRegister = {this.onRegister}
-				/>
-			</>
-		)
-	}
+			<RegisterModal
+				registerShow = {registerShow}
+				registerFail = {registerFail}
+				onRegisterShow = {onRegisterShow}
+				onRegisterFail = {onRegisterFail}
+				onRegister = {onRegister}
+			/>
+		</>
+	)
 }
 
-export default App;
+export default App

@@ -1,31 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"
 
 
-import { Container } from "react-bootstrap";
+import { Container } from "react-bootstrap"
 
-import RadarChart from "../components/radarChart";
-import ResultFilter from "../components/resultFilter";
-import { UsersProps, User } from "../types/interfacesRouter";
-import { AgeRange } from "../types/interfacesResult";
+import RadarChart from "../components/radarChart"
+import ResultFilter from "../components/resultFilter"
+
+import { UsersProps } from "../types/interfacesRouter"
+import { AgeRange } from "../types/interfacesResult"
+import { User } from "../types/interfacesRouter"
 
 
 const Result = (props: UsersProps) => {
 	const [filtered, setFiltered] = useState<Array<User>>(props.users)
 	const [results, setResults] = useState<Array<number>>([])
 
+
 	useEffect(() => {setResults(calculateAvgResults(filtered))}, [filtered])
+
 
 	const calculateAvgResults = (users: Array<User>) => {
 		let results = [0,0,0,0,0]
-		users.forEach((user) => {
-			for(let i = 0; i < user.results.length; i++) {
-				results[i] += user.results[i]
-			}
-		})
-		for(let i = 0; i < results.length; i++) {
-			let temp = results[i]/users.length
-			results[i] = temp
-		}
+		users.forEach((user) => {user.results.forEach((result, index) => {results[index] += result})})
+		results.forEach((result, index) => {results[index] = result/users.length})
 		return results
 	}
 
@@ -53,4 +50,4 @@ const Result = (props: UsersProps) => {
 	)
 }
 
-export default Result;
+export default Result

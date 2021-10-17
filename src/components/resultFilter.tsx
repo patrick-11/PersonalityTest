@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 
 
-import { Container, Row, Col, Form, FormGroup, FormLabel, ToggleButtonGroup, ToggleButton, InputGroup } from "react-bootstrap";
+import { Container, Row, Col, Form, FormGroup, FormLabel, ToggleButtonGroup, ToggleButton, InputGroup } from "react-bootstrap"
 
-import { ResultFilterProps } from "../types/interfacesResult";
+import { ResultFilterProps } from "../types/interfacesResult"
 
 
 const ResultFilter = (props: ResultFilterProps) => {
@@ -87,4 +87,4 @@ const ResultFilter = (props: ResultFilterProps) => {
 	)
 }
 
-export default ResultFilter;
+export default ResultFilter
