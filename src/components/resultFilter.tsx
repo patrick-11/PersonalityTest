@@ -3,21 +3,20 @@ import React, { useState } from "react"
 
 import { Container, Row, Col, Form, FormGroup, FormLabel, ToggleButtonGroup, ToggleButton, InputGroup } from "react-bootstrap"
 
-import { ResultFilterProps } from "../types/interfacesResult"
+import { ResultFilterProps, AgeRange } from "../types/interfacesResult"
 
 
 const ResultFilter = (props: ResultFilterProps) => {
 	const [gender, setGender] = useState(["Male", "Female"])
 	const [age, setAge] = useState({minAge: "5", maxAge: "120"})
 
-	const handleChangeGender = (gender: Array<string>) => {
+	const onChangeGender = (gender: Array<string>) => {
 		setGender(gender)
 		props.onChangeFilter(gender, age)
 	}
 	
-	const onCreateProfileChange = (event: any) => {
-		event.persist()
-		setAge((prevAge) => ({...prevAge, [event.target.name]: event.target.value}))
+	const onChangeAge = (age: AgeRange) => {
+		setAge(age)
 		props.onChangeFilter(gender, age)
 	}
 
@@ -29,7 +28,7 @@ const ResultFilter = (props: ResultFilterProps) => {
 						<FormGroup>
 							<FormLabel>Gender:</FormLabel>
 							<InputGroup>
-								<ToggleButtonGroup type="checkbox" value={gender} onChange={handleChangeGender}>
+								<ToggleButtonGroup type="checkbox" value={gender} onChange={onChangeGender}>
 									<ToggleButton
 										id="1"
 										variant = "outline-primary"
@@ -61,7 +60,7 @@ const ResultFilter = (props: ResultFilterProps) => {
 										value = {age.minAge}
 										min = "5"
 										max = {age.maxAge}
-										onChange = {onCreateProfileChange}
+										onChange = {(event) => {onChangeAge({...age, [event.target.name]: event.target.value})}}
 									/>
 								</InputGroup>
 							</Col>
@@ -75,7 +74,7 @@ const ResultFilter = (props: ResultFilterProps) => {
 										value = {age.maxAge}
 										min = {age.minAge}
 										max = "120"
-										onChange = {onCreateProfileChange}
+										onChange = {(event) => {onChangeAge({...age, [event.target.name]: event.target.value})}}
 									/>
 								</InputGroup>
 							</Col>
