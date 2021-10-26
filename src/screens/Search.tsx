@@ -5,24 +5,36 @@ import { Container, Button, Form, InputGroup, FormControl, FormGroup, FormLabel,
 
 import RadarChart from "../components/radarChart"
 import SearchInfo from "../components/searchInfo"
+import SearchTable from "../components/searchTable"
 
 import { UsersProps } from "../types/interfacesRouter"
 import { User } from "../types/interfacesRouter"
 
 
 const Search = (props: UsersProps) => {
+
+	const [users, setUsers] = useState(props.users)
+	const [name, setName] = useState<string>("")
 	const [user, setUser] = useState<User | null>(null)
-	const [username, setUsername] = useState<string>("")
 	const [searchFailed, setSearchFailed] = useState<boolean>(false)
 
 
-	const searchUsersResults = () => {
-		const user = props.users.find((user) => (user.name === username))
-		if(user !== undefined) {
-			setSearchFailed(false)
-			setUser(user)
-		}
-		else {setSearchFailed(true)}
+	const filterUsers = (event: any) => {
+		const temp = props.users.filter((user) => {return user.name.indexOf(event.target.value) !== -1})
+		setName(event.target.value)
+		setUsers(temp)
+	}
+
+	const searchReset = () => {
+		setUsers(props.users)
+		setName("")
+		setUser(null)
+		setSearchFailed(false)
+	}
+
+	const seeResults = (user: User) => {
+		setUser(user)
+		setName(user.name)
 	}
 
 
@@ -36,37 +48,26 @@ const Search = (props: UsersProps) => {
 			<Container>
 				<Form>
 					<FormGroup>
-						<FormLabel>Username:</FormLabel>
+						<FormLabel>Name:</FormLabel>
 						<InputGroup>
 							<InputGroup.Text>@</InputGroup.Text>
 							<FormControl
-								placeholder = "Username"
+								placeholder = "Name"
 								type = "text"
-								value = {username}
-								onChange = {(event) => setUsername(event.target.value)}
+								value = {name}
+								onChange = {filterUsers}
 							/>
 
 							<Button
 								variant = "outline-secondary"
-								disabled = {!username.length}
-								onClick = {() => {
-									setUsername("")
-									setUser(null)
-									setSearchFailed(false)
-								}}
+								disabled = {!name.length}
+								onClick = {() => {searchReset()}}
 							>
 								X
 							</Button>
-							<Button
-								variant = "outline-secondary"
-								disabled = {!username.length || username.length > 10}
-								onClick = {searchUsersResults}
-							>
-								Search
-							</Button>
 						</InputGroup>
 						{
-							username.length > 10 ?
+							name.length > 10 ?
 								<Form.Text>Maximum 10 Characters!</Form.Text>
 							:
 								<></>
@@ -79,7 +80,12 @@ const Search = (props: UsersProps) => {
 				searchFailed ?
 				<Alert variant = "danger">This username does not exist!</Alert>
 				:
-				user !== null ?
+				user === null ?
+					<SearchTable
+						users = {users}
+						seeResults = {seeResults}
+					/>
+					:
 					<>
 						<SearchInfo
 							gender = {user.gender}
@@ -90,10 +96,17 @@ const Search = (props: UsersProps) => {
 						<RadarChart
 							results = {user.results}
 						/>
+						<hr/>
+						<div className="text-center">
+							<Button
+								onClick = {() => {searchReset()}}
+							>
+								Finish
+							</Button>
+						</div>
 					</>
-					:
-					<></>
 			}
+			<hr/>
 		</Container>
 	)
 }
