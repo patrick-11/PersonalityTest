@@ -6,9 +6,3 @@ export type AgeRange = {
 	minAge: string
 	maxAge: string
 }
-
-export interface SearchInfoProps {
-	gender: string
-	age: number
-	avgScore: number
-}

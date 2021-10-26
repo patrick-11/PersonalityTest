@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react"
 
 import Router from "./screens/Router"
 import RegisterModal from "./components/registerModal"
+
 import { Profile } from "./types/interfacesRouter"
+
 import data from "./data/users"
 
 

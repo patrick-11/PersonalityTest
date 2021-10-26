@@ -3,7 +3,7 @@ import React from "react"
 
 import { Container, Col, Row } from "react-bootstrap"
 
-import { SearchInfoProps } from "../types/interfacesResult"
+import { SearchInfoProps } from "../types/interfacesSearch"
 
 
 const searchInfo = (props: SearchInfoProps) => {

@@ -35,11 +35,11 @@ const RegisterModal = (props: RegisterModalProps) => {
 				}
 				<Form>
 					<FormGroup>
-						<FormLabel>Username:</FormLabel>
+						<FormLabel>Name:</FormLabel>
 						<InputGroup>
 							<InputGroup.Text>@</InputGroup.Text>
 							<FormControl
-								placeholder = "Username"
+								placeholder = "Name"
 								type = "text"
 								name = "name"
 								value = {profile.name}
