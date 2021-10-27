@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.js": "/PersonalityTest/static/js/main.896deb99.chunk.js",
-    "main.js.map": "/PersonalityTest/static/js/main.896deb99.chunk.js.map",
+    "main.js": "/PersonalityTest/static/js/main.32dc3ba8.chunk.js",
+    "main.js.map": "/PersonalityTest/static/js/main.32dc3ba8.chunk.js.map",
     "runtime-main.js": "/PersonalityTest/static/js/runtime-main.7be5217c.js",
     "runtime-main.js.map": "/PersonalityTest/static/js/runtime-main.7be5217c.js.map",
     "static/css/2.f2512455.chunk.css": "/PersonalityTest/static/css/2.f2512455.chunk.css",
-    "static/js/2.315e382d.chunk.js": "/PersonalityTest/static/js/2.315e382d.chunk.js",
-    "static/js/2.315e382d.chunk.js.map": "/PersonalityTest/static/js/2.315e382d.chunk.js.map",
+    "static/js/2.c4f007c7.chunk.js": "/PersonalityTest/static/js/2.c4f007c7.chunk.js",
+    "static/js/2.c4f007c7.chunk.js.map": "/PersonalityTest/static/js/2.c4f007c7.chunk.js.map",
     "index.html": "/PersonalityTest/index.html",
     "static/css/2.f2512455.chunk.css.map": "/PersonalityTest/static/css/2.f2512455.chunk.css.map",
-    "static/js/2.315e382d.chunk.js.LICENSE.txt": "/PersonalityTest/static/js/2.315e382d.chunk.js.LICENSE.txt"
+    "static/js/2.c4f007c7.chunk.js.LICENSE.txt": "/PersonalityTest/static/js/2.c4f007c7.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.7be5217c.js",
     "static/css/2.f2512455.chunk.css",
-    "static/js/2.315e382d.chunk.js",
-    "static/js/main.896deb99.chunk.js"
+    "static/js/2.c4f007c7.chunk.js",
+    "static/js/main.32dc3ba8.chunk.js"
   ]
 }
