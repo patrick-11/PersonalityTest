@@ -1,17 +1,24 @@
 import React from "react"
 
 
-import { Container, Button } from "react-bootstrap"
+import { Container } from "react-bootstrap"
 
 import TestStart from "../components/testStart"
 import TestQuestions from "../components/testQuestions"
 import SearchInfo from "../components/searchInfo"
 import RadarChart from "../components/radarChart"
+import ButtonCenter from "../components/buttonCenter"
 
 import { TestProps } from "../types/interfacesTest"
 
 
 const Test = (props: TestProps) => {
+
+	const finishButtonAction = () => {
+		props.onInTestChange(false)
+		props.onUserChange("finish", null)
+	}
+
 	return (
 		<Container>
 			<hr/>
@@ -39,16 +46,11 @@ const Test = (props: TestProps) => {
 								results = {props.user.results}
 							/>
 							<hr/>
-							<div className="text-center">
-								<Button
-									onClick = {() => {
-										props.onInTestChange(false)
-										props.onUserChange("finish", null)
-									}}
-								>
-									Finish
-								</Button>
-							</div>
+							<ButtonCenter
+								name = {"Finish"}
+								size = {"lg"}
+								action = {finishButtonAction}
+							/>
 						</>
 					:
 					<TestStart

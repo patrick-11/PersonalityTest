@@ -1,7 +1,9 @@
 import React from "react"
 
 
-import { Container, Table, Button } from "react-bootstrap"
+import { Container, Table } from "react-bootstrap"
+
+import ButtonCenter from "./buttonCenter"
 
 import { SearchTableProps } from "../types/interfacesSearch"
 
@@ -17,11 +19,14 @@ const searchTable = (props: SearchTableProps) => {
 						<th>Gender</th>
 						<th>Age</th>
 						<th>Score</th>
-						<th className="text-center">Results</th>
+						<th className="text-center">Action</th>
 					</tr>
 				</thead>
 				<tbody>
 					{props.users.map((user, index) => {
+
+						const resultsButtonAction = () => {props.seeResults(user)}
+
 						return (
 							<tr key = {index}>
 								<td>{index + 1}</td>
@@ -29,13 +34,12 @@ const searchTable = (props: SearchTableProps) => {
 								<td>{user.gender}</td>
 								<td>{user.age}</td>
 								<td>{user.avgScore}</td>
-								<td className="text-center">
-									<Button
-										size = "sm"
-										onClick = {() => {props.seeResults(user)}}
-									>
-										Results
-									</Button>
+								<td>
+									<ButtonCenter
+										name = {"Results"}
+										size = {"sm"}
+										action = {resultsButtonAction}
+									/>
 								</td>
 							</tr>
 						)

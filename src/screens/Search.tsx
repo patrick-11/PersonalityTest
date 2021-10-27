@@ -1,12 +1,13 @@
 import React, { useState } from "react"
 
 
-import { Container, Button } from "react-bootstrap"
+import { Container } from "react-bootstrap"
 
 import SearchBar from "../components/searchBar"
 import RadarChart from "../components/radarChart"
 import SearchInfo from "../components/searchInfo"
 import SearchTable from "../components/searchTable"
+import ButtonCenter from "../components/buttonCenter"
 
 import { UsersProps } from "../types/interfacesRouter"
 import { User } from "../types/interfacesRouter"
@@ -71,13 +72,11 @@ const Search = (props: UsersProps) => {
 						results = {user.results}
 					/>
 					<hr/>
-					<div className="text-center">
-						<Button
-							onClick = {() => {searchReset()}}
-						>
-							Finish
-						</Button>
-					</div>
+					<ButtonCenter
+						name = {"Finish"}
+						size = {"lg"}
+						action = {searchReset}
+					/>
 					<hr/>
 				</>
 			}

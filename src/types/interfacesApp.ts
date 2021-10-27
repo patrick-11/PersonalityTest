@@ -7,3 +7,9 @@ export interface RegisterModalProps {
 	onRegisterFail: () => void
 	onRegister: (profile: Profile) => void
 }
+
+export interface ButtonCenterProps {
+	name: string
+	size: undefined | "sm" | "lg" 
+	action: () => void
+}
