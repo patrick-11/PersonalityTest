@@ -1,5 +1,11 @@
 import { User } from "./interfacesRouter"
 
+export interface SearchBarProps {
+	name: string
+	filterUsers: (event: any) => void
+	searchReset: () => void
+}
+
 export interface SearchInfoProps {
 	name: string
 	gender: string
