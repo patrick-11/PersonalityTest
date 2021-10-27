@@ -11,6 +11,9 @@ const searchInfo = (props: SearchInfoProps) => {
 		<Container>
 			<Row>
 				<Col>
+					<h3>Name: {props.name}</h3>
+				</Col>
+				<Col className="text-center">
 					<h3>Gender: {props.gender}</h3>
 				</Col>
 				<Col className="text-center">

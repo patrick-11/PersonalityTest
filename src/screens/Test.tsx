@@ -29,6 +29,7 @@ const Test = (props: TestProps) => {
 						:
 						<>
 							<SearchInfo
+									name = {props.user.name}
 									gender = {props.user.gender}
 									age = {props.user.age}
 									avgScore = {props.user.avgScore}

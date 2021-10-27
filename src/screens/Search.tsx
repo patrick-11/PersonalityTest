@@ -88,6 +88,7 @@ const Search = (props: UsersProps) => {
 					:
 					<>
 						<SearchInfo
+							name = {user.name}
 							gender = {user.gender}
 							age = {user.age}
 							avgScore = {user.avgScore}
