@@ -11,6 +11,7 @@ const buttonCenter = (props: ButtonCenterProps) => {
 		<div className = "text-center">
 			<Button
 				size = {props.size}
+				variant = {props.variant}
 				onClick = {() => {props.action()}}
 			>
 				{props.name}

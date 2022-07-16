@@ -38,6 +38,7 @@ const searchTable = (props: SearchTableProps) => {
 									<ButtonCenter
 										name = {"Results"}
 										size = {"sm"}
+										variant = {"outline-info"}
 										action = {resultsButtonAction}
 									/>
 								</td>

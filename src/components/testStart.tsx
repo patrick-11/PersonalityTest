@@ -17,6 +17,7 @@ const TestStart = (props: TestStartProps) => {
 			<ButtonCenter
 				name = {"Register"}
 				size = {"lg"}
+				variant = {"primary"}
 				action = {onRegisterTrue}
 			/>
 		)
@@ -26,6 +27,7 @@ const TestStart = (props: TestStartProps) => {
 			<ButtonCenter
 				name = {"Start Test"}
 				size = {"lg"}
+				variant = {"success"}
 				action = {onInTestTrue}
 			/>
 		)

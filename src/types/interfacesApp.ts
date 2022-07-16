@@ -10,6 +10,7 @@ export interface RegisterModalProps {
 
 export interface ButtonCenterProps {
 	name: string
+	variant: string
 	size: undefined | "sm" | "lg" 
 	action: () => void
 }

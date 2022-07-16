@@ -75,6 +75,7 @@ const Search = (props: UsersProps) => {
 					<ButtonCenter
 						name = {"Finish"}
 						size = {"lg"}
+						variant = {"primary"}
 						action = {searchReset}
 					/>
 					<hr/>

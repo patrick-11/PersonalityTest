@@ -81,7 +81,7 @@ const TestQuestions = (props: TestQuestionsProps) => {
 					</div>
 				</Col>
 			</Row>
-			<hr/>
+			<br></br>
 			<Row>
 				<Col className="text-center">
 					<ButtonGroup>
@@ -106,11 +106,13 @@ const TestQuestions = (props: TestQuestionsProps) => {
 			<Row>
 				<Col className="text-center">
 					<Button
+						variant = "secondary"
 						onClick = {() => onCancel()}
 					>
 						Cancel
 					</Button>{' '}
 					<Button
+						variant = "primary"
 						disabled = {questionIdx === 0}
 						onClick = {() => setQuestionIdx(questionIdx - 1)}
 					>
@@ -118,6 +120,7 @@ const TestQuestions = (props: TestQuestionsProps) => {
 					</Button>{' '}
 					{questionIdx < 9 ?
 						<Button
+							variant = "primary"
 							disabled = {typeof props.user.answers[questionIdx] === "undefined"}
 							onClick = {() => setQuestionIdx(questionIdx + 1)}
 						>
@@ -125,6 +128,7 @@ const TestQuestions = (props: TestQuestionsProps) => {
 						</Button>
 						:
 						<Button
+							variant = "success"
 							disabled = {typeof props.user.answers[questionIdx] === "undefined"}
 							onClick = {() => {onSubmit()}}
 						>

@@ -49,6 +49,7 @@ const Test = (props: TestProps) => {
 							<ButtonCenter
 								name = {"Finish"}
 								size = {"lg"}
+								variant = {"primary"}
 								action = {finishButtonAction}
 							/>
 						</>
