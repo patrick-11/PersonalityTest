@@ -1,0 +1,57 @@
+import axios from "axios"
+import type { User } from "../hooks/reducer/usersReducer"
+import { errorCheck } from "../util/util"
+
+const url = "http://localhost:8080/api/users/"
+
+
+export const usersAPI = {
+
+	getUsers: () => {
+		return new Promise<Array<User>>((resolve, reject) => {
+			axios({method: "GET", url: url})
+				.then(response => resolve(response.data))
+				.catch(error => reject(errorCheck(error)))
+		})
+	},
+
+	getUser: (id: string) => {
+		return new Promise<User>((resolve, reject) => {
+			axios({method: "GET", url: url + id})
+				.then(response => resolve(response.data))
+				.catch(error => reject(errorCheck(error)))
+		})
+	},
+
+	createUser: (user: User) => {
+		return new Promise<User>((resolve, reject) => {
+			axios({method: "POST", url: url, data: JSON.stringify(user), headers: {"Content-Type": "application/json"}})
+				.then(response => resolve(response.data))
+				.catch(error => reject(errorCheck(error)))
+		})
+	},
+
+	createUserById: (id: string, user: User) => {
+		return new Promise<User>((resolve, reject) => {
+			axios({method: "POST", url: url + id, data: JSON.stringify(user), headers: {"Content-Type": "application/json"}})
+				.then(response => resolve(response.data))
+				.catch(error => reject(errorCheck(error)))
+		})
+	},
+
+	updateUser: (user: User) => {
+		return new Promise<User>((resolve, reject) => {
+			axios({method: "PUT", url: url + user.id, data: JSON.stringify(user), headers: {"Content-Type": "application/json"}})
+				.then(response => resolve(response.data))
+				.catch(error => reject(errorCheck(error)))
+		})
+	},
+
+	deleteUser: (id: string) => {
+		return new Promise<boolean>((resolve, reject) => {
+			axios({method: "DELETE", url: url + id})
+				.then(response => resolve(response.data))
+				.catch(error => reject(errorCheck(error)))
+		})
+	}
+}
