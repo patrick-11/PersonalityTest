@@ -1,6 +1,6 @@
 # Personality Test
 
-Simple personality test which evaluates users in five aspects: Extraversion, agreeableness, conscientiousness, emotional stability, and openness to experiences. The website can be visited at: https://patrick-11.github.io/PersonalityTest/
+Simple personality test which evaluates users in five aspects: Extraversion, agreeableness, conscientiousness, emotional stability, and openness to experiences.
 
 
 ## Table of Contents
@@ -49,7 +49,7 @@ $ cd PersonalityTest/
 $ docker-compose up
 ```
 
-Once everything is built and the container is running you can visit the site at: [localhost:3000/home](localhost:3000/home)
+Once everything is built and the container is running you can visit the site at: http://localhost:3000/home/
 
 ## Sources
 
