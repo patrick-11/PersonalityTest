@@ -24,23 +24,32 @@ On the first tab the general information can be seen about the website. On the "
 
 ## Technologies
 
-* **Language**: TypeScript
-    * **Library**: React
-    * **Framework**: React Bootstrap
-* **Router**: React Router DOM
-* **HTTP client library**: Axios
-* **Style**: Bootswatch - Cosmo
-* **Chart**: React Charts
+* **Client**
+  * **Language**: TypeScript
+  * **Framework**: React Bootstrap
+  * **Router**: React Router DOM
+  * **HTTP Library**: Axios
+  * **Style**: Bootswatch - Cosmo
+  * **Chart**: React Charts
+* **Server**
+  * **Build Tool**: Apache Maven
+  * **Language**: Java
+  * **Framework**: Spring Boot
+  * **JPA**: Hibernate
+  * **Database**: PostgreSQL
+* **Other**
+  * **Virtualization**: Docker
 
 ## Setup
 
-Assuming that you have Node 10 LTS or greater installed and cloned the repository.
+Assuming that you have Docker Engine release 1.13.0+ installed and the repository cloned, you can execute these commands:
 
 ```
 $ cd PersonalityTest/
-$ npm install
-$ npm start
+$ docker-compose up
 ```
+
+Once everything is built and the container is running you can visit the site at: [localhost:3000/home](localhost:3000/home)
 
 ## Sources
 
@@ -50,3 +59,8 @@ $ npm start
 * [Axios](https://axios-http.com/)
 * [Bootswatch](https://bootswatch.com/)
 * [React Charts](https://react-charts.js.org/)
+* [Apache Maven](https://maven.apache.org/)
+* [Spring Boot](https://spring.io/projects/spring-boot/)
+* [Hibernate](https://hibernate.org/)
+* [PostgreSQL](https://www.postgresql.org/)
+* [Docker](https://www.docker.com//)

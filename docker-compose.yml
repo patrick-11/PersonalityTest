@@ -1,0 +1,38 @@
+version: "3"
+services:
+
+  personalitytest-postgres:
+    image: "postgres:14-alpine"
+    container_name: personalityTest-postgres
+    volumes:
+      - personalitytest-data:/var/lib/postgresql/data
+    ports:
+      - 5433:5433
+    environment:
+      - POSTGRES_DB=personalitytest
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  personalitytest-server:
+    build: ./personalityTest-server
+    container_name: personalityTest-server
+    environment:
+      - DB_SERVER=personalityTest-postgres
+      - POSTGRES_DB=personalitytest
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 8080:8080
+    links:
+      - personalitytest-postgres
+
+  personalitytest-client:
+    build: ./personalityTest-client
+    container_name: personalityTest-client
+    ports:
+      - 3000:3000
+    links:
+      - personalitytest-server
+
+volumes:
+  personalitytest-data:
