@@ -1,5 +1,6 @@
 package com.github.personalitytest.model;
 
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -10,101 +11,38 @@ import java.util.UUID;
 
 
 @Entity(name = "results")
+@NoArgsConstructor
+@ToString
 public class Result {
 
   @Id
-  private UUID id;
+  private @Getter @Setter UUID id;
   @CreationTimestamp
-  private Timestamp completed;
-  @ManyToOne
-  @JoinColumn
-  private User user;
+  private @Getter @Setter Timestamp completed;
+  @ManyToOne @JoinColumn
+  private @Getter @Setter User user;
   @ElementCollection(targetClass=Integer.class)
-  private List<Integer> answers;
+  private @Getter @Setter List<Integer> answers;
   @ElementCollection(targetClass=Double.class)
-  private List<Double> results;
-  private double avgScore;
-
-
-  public Result() {
-  }
-
+  private @Getter @Setter List<Double> results;
+  private @Getter @Setter double avgScore;
 
   public void calculateResults() {
     List<Double> temp = new ArrayList<>();
-    temp.add((answers.get(0) + reverse(answers.get(5)))/2);
-    temp.add((answers.get(6) + reverse(answers.get(1)))/2);
-    temp.add((answers.get(2) + reverse(answers.get(7)))/2);
-    temp.add((answers.get(8) + reverse(answers.get(3)))/2);
-    temp.add((answers.get(4) + reverse(answers.get(9)))/2);
+    temp.add((getAnswers().get(0) + reverse(getAnswers().get(5)))/2);
+    temp.add((getAnswers().get(6) + reverse(getAnswers().get(1)))/2);
+    temp.add((getAnswers().get(2) + reverse(getAnswers().get(7)))/2);
+    temp.add((getAnswers().get(8) + reverse(getAnswers().get(3)))/2);
+    temp.add((getAnswers().get(4) + reverse(getAnswers().get(9)))/2);
     setResults(temp);
   }
 
   public void calculateAvgScore() {
-    double temp = 0;
-    for (double result : results) {
-      temp += result;
-    }
-    setAvgScore(temp/results.size());
+    setAvgScore(getResults().stream().reduce(0.0, Double::sum)/getResults().size());
   }
 
   private double reverse(double value) {
     return (8 - value);
   }
 
-
-  public UUID getId() {
-    return id;
-  }
-
-  public void setId(UUID id) {
-    this.id = id;
-  }
-
-  public Timestamp getCompleted() {
-    return completed;
-  }
-
-  public void setCompleted(Timestamp completed) {
-    this.completed = completed;
-  }
-
-
-  public User getUser() {
-    return user;
-  }
-
-  public void setUser(User user) {
-    this.user = user;
-  }
-
-  public List<Integer> getAnswers() {
-    return answers;
-  }
-
-  public void setAnswers(List<Integer> answers) {
-    this.answers = answers;
-  }
-
-  public List<Double> getResults() {
-    return results;
-  }
-
-  public void setResults(List<Double> results) {
-    this.results = results;
-  }
-
-  public double getAvgScore() {
-    return avgScore;
-  }
-
-  public void setAvgScore(double avgScore) {
-    this.avgScore = avgScore;
-  }
-
-  @Override
-  public String toString() {
-    return "id: " + getId() + " completed: " + getCompleted() + " user: " + getUser() + " answers: " + getAnswers() +
-        " results: " + getResults() + " avgScore: " + getAvgScore();
-  }
 }
