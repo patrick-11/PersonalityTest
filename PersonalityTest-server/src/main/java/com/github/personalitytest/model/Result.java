@@ -12,20 +12,22 @@ import java.util.UUID;
 
 @Entity(name = "results")
 @NoArgsConstructor
+@Getter
+@Setter
 @ToString
 public class Result {
 
   @Id
-  private @Getter @Setter UUID id;
+  private UUID id;
   @CreationTimestamp
-  private @Getter @Setter Timestamp completed;
+  private Timestamp completed;
   @ManyToOne @JoinColumn
-  private @Getter @Setter User user;
+  private User user;
   @ElementCollection(targetClass=Integer.class)
-  private @Getter @Setter List<Integer> answers;
+  private List<Integer> answers;
   @ElementCollection(targetClass=Double.class)
-  private @Getter @Setter List<Double> results;
-  private @Getter @Setter double avgScore;
+  private List<Double> results;
+  private double avgScore;
 
   public void calculateResults() {
     List<Double> temp = new ArrayList<>();
@@ -44,5 +46,4 @@ public class Result {
   private double reverse(double value) {
     return (8 - value);
   }
-
 }

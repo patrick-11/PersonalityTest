@@ -2,6 +2,7 @@ package com.github.personalitytest.controller;
 
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.service.ResultService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 
 @Controller
+@AllArgsConstructor
 @CrossOrigin
 @RequestMapping("api/results")
 public class ResultController {
@@ -33,7 +35,7 @@ public class ResultController {
 
   @GetMapping("/user/{userId}")
   public ResponseEntity<List<ResultDto>> getResultsByUserId(@PathVariable("userId") UUID userId) {
-    return new ResponseEntity<>(resultService.getByUserId(userId), HttpStatus.CREATED);
+    return new ResponseEntity<>(resultService.getByUserId(userId), HttpStatus.OK);
   }
 
   @PostMapping("/{userId}")

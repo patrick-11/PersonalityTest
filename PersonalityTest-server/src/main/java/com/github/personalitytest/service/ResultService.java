@@ -9,6 +9,7 @@ import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.exception.NotFoundException;
 import com.github.personalitytest.model.Result;
 import com.github.personalitytest.model.User;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
 
 
 @Service
+@AllArgsConstructor
 public class ResultService implements ServiceInter<ResultDto> {
 
   @Autowired

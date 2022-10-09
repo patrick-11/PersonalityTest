@@ -7,6 +7,7 @@ import com.github.personalitytest.repository.UserRepository;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.model.User;
 import com.github.personalitytest.type.Gender;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 
 @Service
+@AllArgsConstructor
 public class UserService implements ServiceInter<UserDto> {
 
   @Autowired

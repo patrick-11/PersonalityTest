@@ -3,6 +3,7 @@ package com.github.personalitytest.controller;
 
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 
 @Controller
+@AllArgsConstructor
 @CrossOrigin
 @RequestMapping("api/users")
 public class UserController {
