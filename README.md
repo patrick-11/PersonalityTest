@@ -37,6 +37,7 @@ On the first tab the general information can be seen about the website. On the "
   * **Framework**: Spring Boot
   * **JPA**: Hibernate
   * **Database**: PostgreSQL
+  * **Testing**: JUnit 5 + Mockito
 * **Other**
   * **Virtualization**: Docker
 
