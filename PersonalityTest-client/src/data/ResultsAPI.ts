@@ -25,7 +25,7 @@ export const ResultsAPI = {
 
   getResultsByUserId: (userId: string) => {
     return new Promise<Array<Result>>((resolve, reject) => {
-      axios({method: "GET", url: url + "user/" + userId})
+      axios({method: "GET", url: url + "findByUser/" + userId})
         .then(response => resolve(response.data))
         .catch(error => reject(errorCheck(error)))
     })
