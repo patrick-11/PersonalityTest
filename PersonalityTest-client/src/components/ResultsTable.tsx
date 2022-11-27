@@ -135,7 +135,7 @@ const ResultsTable = (props: ResultsTableInterface) => {
                     :
                     null
                   }
-                  <td>{convertTimestamp(result.completed)}</td>
+                  <td>{result.completed}</td>
                   <td colSpan={4}>{result.avgScore}</td>
                   <td className="text-center">
                     <Stack direction="horizontal" gap={1} className="justify-content-center">
