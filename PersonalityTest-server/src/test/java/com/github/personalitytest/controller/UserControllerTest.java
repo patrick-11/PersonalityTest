@@ -4,7 +4,6 @@ import com.github.personalitytest.AbstractTest;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
-import com.github.personalitytest.exception.NotValidException;
 import com.github.personalitytest.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,201 +52,511 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void getUsers() throws Exception {
+  void getAll_Success() throws Exception {
     when(userService.getAll()).thenReturn(List.of(userDto1, userDto2));
 
-    MvcResult mvcResult = mvc.perform(get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var mvcResult = mvc.perform(get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(List.of(userDto1, userDto2)), content);
   }
 
   @Test
-  void getUsers_UsersDoNotExist() throws Exception {
-    when(userService.getAll()).thenReturn(List.of());
+  void getAll_Empty() throws Exception {
+    when(userService.getAll()).thenReturn(Collections.emptyList());
 
-    MvcResult mvcResult = mvc.perform(get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var mvcResult = mvc.perform(get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(List.of()), content);
+    assertEquals(mapToJson(Collections.emptyList()), content);
   }
 
   @Test
-  void getUser() throws Exception {
+  void get_Success() throws Exception {
     when(userService.get(ArgumentMatchers.any(UUID.class))).thenReturn(userDto1);
 
-    MvcResult mvcResult = mvc.perform(get(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var mvcResult = mvc.perform(get(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(userDto1), content);
   }
 
   @Test
-  void getUser_UserNotFound() throws Exception {
-    when(userService.get(ArgumentMatchers.any(UUID.class))).thenThrow(new NotFoundException(USER_GET_NOT_FOUND));
+  void get_NotFound() throws Exception {
+    when(userService.get(ArgumentMatchers.any(UUID.class)))
+        .thenThrow(new NotFoundException(ErrorResponse.USER_GET_NOT_FOUND));
 
-    MvcResult mvcResult = mvc.perform(get(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var mvcResult = mvc.perform(get(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(new ErrorResponse(ENTRY_NOT_FOUND, List.of(USER_GET_NOT_FOUND))), content);
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
+        List.of(ErrorResponse.USER_GET_NOT_FOUND))), content);
   }
 
   @Test
-  void createUser() throws Exception {
+  void create_Success() throws Exception {
     when(userService.create(ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
 
-    MvcResult mvcResult = mvc.perform(post(uri)
+    var mvcResult = mvc.perform(post(uri)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(userDto1)))
         .andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(userDto1), content);
   }
 
   @Test
-  void createUser_NoContent() throws Exception {
-    when(userService.create(ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
-    MvcResult mvcResult = mvc.perform(post(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
+  void create_NoContent() throws Exception {
+    var mvcResult = mvc.perform(post(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
-  void createUser_UserNameNotValid() throws Exception {
-    when(userService.create(ArgumentMatchers.any(UserDto.class)))
-        .thenThrow(new NotValidException(USER_VALIDATION_NAME_ERROR));
+  void create_NameNull() throws Exception {
+    userDto1.setName(null);
+    var mvcResult = mvc.perform(post(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void create_NameEmpty() throws Exception {
+    userDto1.setName("");
+    var mvcResult = mvc.perform(post(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_SIZE_ERROR, ErrorResponse.USER_VALIDATION_NAME_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void create_NameWrongSize() throws Exception {
     userDto1.setName("T");
-    MvcResult mvcResult = mvc.perform(post(uri)
+    var mvcResult = mvc.perform(post(uri)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(userDto1)))
         .andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(new ErrorResponse(ENTRY_NOT_VALID, List.of(USER_VALIDATION_NAME_ERROR))), content);
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_SIZE_ERROR))), content);
   }
 
   @Test
-  void createUserById() throws Exception {
-    when(userService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
-
-    MvcResult mvcResult = mvc.perform(post(uri + userDto1.getId())
+  void create_GenderNull() throws Exception {
+    userDto1.setGender(null);
+    var mvcResult = mvc.perform(post(uri)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(userDto1)))
         .andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void create_GenderEmpty() throws Exception {
+    userDto1.setGender("");
+    var mvcResult = mvc.perform(post(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_ERROR, ErrorResponse.USER_VALIDATION_GENDER_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void create_GenderNotExisting() throws Exception {
+    userDto1.setGender("Non-Binary");
+    var mvcResult = mvc.perform(post(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_ERROR))), content);
+  }
+
+  @Test
+  void create_AgeSmaller() throws Exception {
+    userDto1.setAge(4);
+    var mvcResult = mvc.perform(post(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_AGE_SIZE_ERROR))), content);
+  }
+
+  @Test
+  void create_AgeGreater() throws Exception {
+    userDto1.setAge(121);
+    var mvcResult = mvc.perform(post(uri)
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_AGE_SIZE_ERROR))), content);
+  }
+
+  @Test
+  void createById_Success() throws Exception {
+    when(userService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
+
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.CREATED.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(userDto1), content);
   }
 
   @Test
-  void createUserById_NoContent() throws Exception {
-    when(userService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
-    MvcResult mvcResult = mvc.perform(post(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+  void createById_NoContent() throws Exception {
+    var mvcResult = mvc.perform(post(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
-  void createUserById_UserGenderNotValid() throws Exception {
-    when(userService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class)))
-        .thenThrow(new NotValidException(USER_VALIDATION_GENDER_ERROR));
-
-    userDto1.setGender("Non-Binary");
-    MvcResult mvcResult = mvc.perform(post(uri + userDto1.getId())
+  void createById_NameNull() throws Exception {
+    userDto1.setName(null);
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(userDto1)))
         .andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(new ErrorResponse(ENTRY_NOT_VALID, List.of(USER_VALIDATION_GENDER_ERROR))), content);
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_EMPTY_ERROR))), content);
   }
 
   @Test
-  void updateUser() throws Exception {
+  void createById_NameEmpty() throws Exception {
+    userDto1.setName("");
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_SIZE_ERROR, ErrorResponse.USER_VALIDATION_NAME_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void createById_NameWrongSize() throws Exception {
+    userDto1.setName("T");
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_SIZE_ERROR))), content);
+  }
+
+  @Test
+  void createById_GenderNull() throws Exception {
+    userDto1.setGender(null);
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void createById_GenderEmpty() throws Exception {
+    userDto1.setGender("");
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_ERROR, ErrorResponse.USER_VALIDATION_GENDER_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void createById_GenderNotExisting() throws Exception {
+    userDto1.setGender("Non-Binary");
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_ERROR))), content);
+  }
+
+  @Test
+  void createById_AgeSmaller() throws Exception {
+    userDto1.setAge(4);
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_AGE_SIZE_ERROR))), content);
+  }
+
+  @Test
+  void createById_AgeGreater() throws Exception {
+    userDto1.setAge(121);
+    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_AGE_SIZE_ERROR))), content);
+  }
+
+  @Test
+  void update_Success() throws Exception {
     when(userService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
 
-    MvcResult mvcResult = mvc.perform(put(uri + userDto1.getId())
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(userDto1)))
         .andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(userDto1), content);
   }
 
   @Test
-  void updateUser_NoContent() throws Exception {
-    when(userService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
-    MvcResult mvcResult = mvc.perform(post(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+  void update_NoContent() throws Exception {
+    var mvcResult = mvc.perform(put(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
-  void updateUser_UserAgeNotValid() throws Exception {
-    when(userService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class)))
-        .thenThrow(new NotValidException(USER_VALIDATION_AGE_ERROR));
-
-    userDto1.setAge(3);
-    MvcResult mvcResult = mvc.perform(put(uri + userDto1.getId())
+  void update_NameNull() throws Exception {
+    userDto1.setName(null);
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(userDto1)))
         .andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(new ErrorResponse(ENTRY_NOT_VALID, List.of(USER_VALIDATION_AGE_ERROR))), content);
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_EMPTY_ERROR))), content);
   }
 
   @Test
-  void updateUser_UserNotFound() throws Exception {
-    when(userService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class)))
-        .thenThrow(new NotFoundException(USER_UPDATE_NOT_FOUND));
-
-    MvcResult mvcResult = mvc.perform(put(uri + userDto1.getId())
+  void update_NameEmpty() throws Exception {
+    userDto1.setName("");
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(userDto1)))
         .andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_SIZE_ERROR, ErrorResponse.USER_VALIDATION_NAME_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void update_NameWrongSize() throws Exception {
+    userDto1.setName("T");
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_NAME_SIZE_ERROR))), content);
+  }
+
+  @Test
+  void update_GenderNull() throws Exception {
+    userDto1.setGender(null);
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void update_GenderEmpty() throws Exception {
+    userDto1.setGender("");
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_ERROR, ErrorResponse.USER_VALIDATION_GENDER_EMPTY_ERROR))), content);
+  }
+
+  @Test
+  void update_GenderNotExisting() throws Exception {
+    userDto1.setGender("Non-Binary");
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_GENDER_ERROR))), content);
+  }
+
+  @Test
+  void update_AgeSmaller() throws Exception {
+    userDto1.setAge(4);
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_AGE_SIZE_ERROR))), content);
+  }
+
+  @Test
+  void update_AgeGreater() throws Exception {
+    userDto1.setAge(121);
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_VALID,
+        List.of(ErrorResponse.USER_VALIDATION_AGE_SIZE_ERROR))), content);
+  }
+
+  @Test
+  void update_NotFound() throws Exception {
+    when(userService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class)))
+        .thenThrow(new NotFoundException(ErrorResponse.USER_UPDATE_NOT_FOUND));
+
+    var mvcResult = mvc.perform(put(uri + userDto1.getId())
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(mapToJson(userDto1)))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(new ErrorResponse(ENTRY_NOT_FOUND, List.of(USER_UPDATE_NOT_FOUND))), content);
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
+        List.of(ErrorResponse.USER_UPDATE_NOT_FOUND))), content);
   }
 
   @Test
-  void deleteUser() throws Exception {
+  void delete_Success() throws Exception {
     when(userService.delete(ArgumentMatchers.any(UUID.class))).thenReturn(true);
 
-    MvcResult mvcResult = mvc.perform(delete(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var mvcResult = mvc.perform(delete(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
     assertTrue(Boolean.parseBoolean(content));
   }
 
   @Test
-  void deleteUser_UserNotFound() throws Exception {
-    when(userService.delete(ArgumentMatchers.any(UUID.class))).thenThrow(new NotFoundException(USER_DOES_NOT_EXIST));
+  void delete_NotFound() throws Exception {
+    when(userService.delete(ArgumentMatchers.any(UUID.class))).thenThrow(new NotFoundException(ErrorResponse.USER_DOES_NOT_EXIST));
 
-    MvcResult mvcResult = mvc.perform(delete(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
-    String content = mvcResult.getResponse().getContentAsString();
+    var mvcResult = mvc.perform(delete(uri + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(new ErrorResponse(ENTRY_NOT_FOUND, List.of(USER_DOES_NOT_EXIST))), content);
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
+        List.of(ErrorResponse.USER_DOES_NOT_EXIST))), content);
   }
 }
