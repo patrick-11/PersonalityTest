@@ -19,38 +19,42 @@ import java.util.UUID;
 @AllArgsConstructor
 @CrossOrigin
 @RequestMapping("api/users")
-public class UserController {
+public class UserController implements ControllerInter<UserDto> {
 
   @Autowired
   UserService userService;
 
   @GetMapping("/")
-  public ResponseEntity<List<UserDto>> getUsers() {
+  public ResponseEntity<List<UserDto>> getAll() {
     return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
   }
 
+  @Override
   @GetMapping("/{id}")
-  public ResponseEntity<UserDto> getUser(@PathVariable("id") UUID id) {
+  public ResponseEntity<UserDto> get(@PathVariable("id") UUID id) {
     return new ResponseEntity<>(userService.get(id), HttpStatus.OK);
   }
 
+  @Override
   @PostMapping("/")
-  public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto user) {
+  public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto user) {
     return new ResponseEntity<>(userService.create(user), HttpStatus.CREATED);
   }
 
   @PostMapping("/{id}")
-  public ResponseEntity<UserDto> createUserById(@PathVariable("id") UUID id,@Valid @RequestBody UserDto user) {
+  public ResponseEntity<UserDto> createById(@PathVariable("id") UUID id, @Valid @RequestBody UserDto user) {
     return new ResponseEntity<>(userService.create(id, user), HttpStatus.CREATED);
   }
 
+  @Override
   @PutMapping("/{id}")
-  public ResponseEntity<UserDto> updateUser(@PathVariable("id") UUID id,@Valid @RequestBody UserDto user) {
+  public ResponseEntity<UserDto> update(@PathVariable("id") UUID id, @Valid @RequestBody UserDto user) {
     return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK);
   }
 
+  @Override
   @DeleteMapping("/{id}")
-  public ResponseEntity<Boolean> deleteUser(@PathVariable("id") UUID id) {
+  public ResponseEntity<Boolean> delete(@PathVariable("id") UUID id) {
     return new ResponseEntity<>(userService.delete(id), HttpStatus.OK);
   }
 }

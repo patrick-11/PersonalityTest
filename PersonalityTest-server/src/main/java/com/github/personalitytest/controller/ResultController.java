@@ -18,43 +18,52 @@ import java.util.UUID;
 @AllArgsConstructor
 @CrossOrigin
 @RequestMapping("api/results")
-public class ResultController {
+public class ResultController implements ControllerInter<ResultDto> {
 
   @Autowired
   ResultService resultService;
 
+  @Override
   @GetMapping("/")
-  public ResponseEntity<List<ResultDto>> getResults() {
+  public ResponseEntity<List<ResultDto>> getAll() {
     return new ResponseEntity<>(resultService.getAll(), HttpStatus.OK);
   }
 
+  @Override
   @GetMapping("/{id}")
-  public ResponseEntity<ResultDto> getResult(@PathVariable("id") UUID id) {
+  public ResponseEntity<ResultDto> get(@PathVariable("id") UUID id) {
     return new ResponseEntity<>(resultService.get(id), HttpStatus.OK);
   }
 
-  @GetMapping("/user/{userId}")
-  public ResponseEntity<List<ResultDto>> getResultsByUserId(@PathVariable("userId") UUID userId) {
-    return new ResponseEntity<>(resultService.getByUserId(userId), HttpStatus.OK);
+  @GetMapping("/findByUser/{userId}")
+  public ResponseEntity<List<ResultDto>> findByUser(@PathVariable("userId") UUID userId) {
+    return new ResponseEntity<>(resultService.findByUser(userId), HttpStatus.OK);
+  }
+
+  @Override
+  public ResponseEntity<ResultDto> create(ResultDto dto) {
+    return null;
   }
 
   @PostMapping("/{userId}")
-  public ResponseEntity<ResultDto> createResult(@PathVariable("userId") UUID userId,@Valid @RequestBody ResultDto resultDto) {
+  public ResponseEntity<ResultDto> create(@PathVariable("userId") UUID userId, @Valid @RequestBody ResultDto resultDto) {
     return new ResponseEntity<>(resultService.create(userId, resultDto), HttpStatus.CREATED);
   }
 
+  @Override
   @PutMapping("/{id}")
-  public ResponseEntity<ResultDto> updateResult(@PathVariable("id") UUID id,@Valid @RequestBody ResultDto resultDto) {
+  public ResponseEntity<ResultDto> update(@PathVariable("id") UUID id, @Valid @RequestBody ResultDto resultDto) {
     return new ResponseEntity<>(resultService.update(id, resultDto), HttpStatus.OK);
   }
 
+  @Override
   @DeleteMapping("/{id}")
-  public ResponseEntity<Boolean> deleteResult(@PathVariable("id") UUID id) {
+  public ResponseEntity<Boolean> delete(@PathVariable("id") UUID id) {
     return new ResponseEntity<>(resultService.delete(id), HttpStatus.OK);
   }
 
   @DeleteMapping("/user/{userId}")
-  public ResponseEntity<Boolean> deleteResultsByUserId(@PathVariable("userId") UUID userId) {
+  public ResponseEntity<Boolean> deleteByUserId(@PathVariable("userId") UUID userId) {
     return new ResponseEntity<>(resultService.deleteByUserId(userId), HttpStatus.OK);
   }
 }
