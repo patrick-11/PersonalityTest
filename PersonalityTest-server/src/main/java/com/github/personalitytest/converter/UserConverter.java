@@ -8,18 +8,18 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class UserConverter {
+public class UserConverter implements ConverterInter<User, UserDto> {
 
+  @Override
   public UserDto convertEntityToDto(User user) {
-    ModelMapper modelMapper = new ModelMapper();
-    UserDto userDto = modelMapper.map(user, UserDto.class);
-    userDto.setGender(Gender.fromName(userDto.getGender()).getValue());
+    UserDto userDto = new ModelMapper().map(user, UserDto.class);
+    userDto.setGender(Gender.valueOf(userDto.getGender()).getValue());
     return userDto;
   }
 
+  @Override
   public User convertDtoToEntity(UserDto userDto) {
-    ModelMapper modelMapper = new ModelMapper();
     userDto.setGender(userDto.getGender().toUpperCase());
-    return modelMapper.map(userDto, User.class);
+    return new ModelMapper().map(userDto, User.class);
   }
 }
