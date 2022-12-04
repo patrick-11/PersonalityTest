@@ -13,5 +13,5 @@ import java.util.UUID;
 public interface ResultRepository extends JpaRepository<Result, UUID> {
 
   @Query("SELECT r FROM results r WHERE r.user.id=?1")
-  List<Result> findByUser(UUID id);
+  List<Result> findByUserId(UUID userId);
 }

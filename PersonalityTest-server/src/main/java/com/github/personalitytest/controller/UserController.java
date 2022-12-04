@@ -1,7 +1,9 @@
 package com.github.personalitytest.controller;
 
 
+import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
+import com.github.personalitytest.service.ResultService;
 import com.github.personalitytest.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,8 @@ public class UserController implements ControllerInter<UserDto> {
 
   @Autowired
   UserService userService;
+  @Autowired
+  ResultService resultService;
 
   @GetMapping("/")
   public ResponseEntity<List<UserDto>> getAll() {
@@ -33,6 +37,11 @@ public class UserController implements ControllerInter<UserDto> {
   @GetMapping("/{id}")
   public ResponseEntity<UserDto> get(@PathVariable("id") UUID id) {
     return new ResponseEntity<>(userService.get(id), HttpStatus.OK);
+  }
+
+  @GetMapping("/{id}/results")
+  public ResponseEntity<List<ResultDto>> getResults(@PathVariable("id") UUID id) {
+    return new ResponseEntity<>(resultService.getByUserId(id), HttpStatus.OK);
   }
 
   @Override
@@ -56,5 +65,10 @@ public class UserController implements ControllerInter<UserDto> {
   @DeleteMapping("/{id}")
   public ResponseEntity<Boolean> delete(@PathVariable("id") UUID id) {
     return new ResponseEntity<>(userService.delete(id), HttpStatus.OK);
+  }
+
+  @DeleteMapping("/{id}/results")
+  public ResponseEntity<Boolean> deleteResults(@PathVariable("id") UUID id) {
+    return new ResponseEntity<>(resultService.deleteByUserId(id), HttpStatus.OK);
   }
 }

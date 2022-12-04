@@ -38,8 +38,8 @@ public class ResultService implements ServiceInter<ResultDto> {
         .orElseThrow(() -> new NotFoundException(ErrorResponse.RESULT_GET_NOT_FOUND));
   }
 
-  public List<ResultDto> findByUser(UUID userId) {
-    return resultRepository.findByUser(userId).stream().map(resultConverter::convertEntityToDto).toList();
+  public List<ResultDto> getByUserId(UUID userId) {
+    return resultRepository.findByUserId(userId).stream().map(resultConverter::convertEntityToDto).toList();
   }
 
   @Override
@@ -79,7 +79,7 @@ public class ResultService implements ServiceInter<ResultDto> {
 
   public boolean deleteByUserId(UUID userId) {
     if (userService.exists(userId)) {
-      findByUser(userId).forEach(resultDto -> delete(resultDto.getId()));
+      getByUserId(userId).forEach(resultDto -> delete(resultDto.getId()));
       return true;
     }
     return false;

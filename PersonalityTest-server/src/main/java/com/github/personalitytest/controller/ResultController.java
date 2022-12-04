@@ -35,11 +35,6 @@ public class ResultController implements ControllerInter<ResultDto> {
     return new ResponseEntity<>(resultService.get(id), HttpStatus.OK);
   }
 
-  @GetMapping("/findByUser/{userId}")
-  public ResponseEntity<List<ResultDto>> findByUser(@PathVariable("userId") UUID userId) {
-    return new ResponseEntity<>(resultService.findByUser(userId), HttpStatus.OK);
-  }
-
   @Override
   public ResponseEntity<ResultDto> create(ResultDto dto) {
     return null;
@@ -60,10 +55,5 @@ public class ResultController implements ControllerInter<ResultDto> {
   @DeleteMapping("/{id}")
   public ResponseEntity<Boolean> delete(@PathVariable("id") UUID id) {
     return new ResponseEntity<>(resultService.delete(id), HttpStatus.OK);
-  }
-
-  @DeleteMapping("/user/{userId}")
-  public ResponseEntity<Boolean> deleteByUserId(@PathVariable("userId") UUID userId) {
-    return new ResponseEntity<>(resultService.deleteByUserId(userId), HttpStatus.OK);
   }
 }
