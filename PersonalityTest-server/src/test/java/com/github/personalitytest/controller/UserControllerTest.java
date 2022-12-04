@@ -1,9 +1,11 @@
 package com.github.personalitytest.controller;
 
 import com.github.personalitytest.AbstractTest;
+import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
+import com.github.personalitytest.service.ResultService;
 import com.github.personalitytest.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -31,19 +34,24 @@ class UserControllerTest extends AbstractTest {
   protected final static String uri = "/api/users/";
   @MockBean
   UserService userService;
+  @MockBean
+  ResultService resultService;
   UserController userController;
   AutoCloseable autoCloseable;
   private UserDto userDto1;
   private UserDto userDto2;
+  private ResultDto resultDto1;
 
 
   @BeforeEach
   void setUp() {
     autoCloseable = MockitoAnnotations.openMocks(this);
-    userController = new UserController(userService);
+    userController = new UserController(userService, resultService);
 
     userDto1 = new UserDto(UUID.randomUUID(), "Patrick", "Male", 25);
     userDto2 = new UserDto(UUID.randomUUID(), "Hannes", "Male", 24);
+    resultDto1 = new ResultDto(UUID.randomUUID(), Timestamp.valueOf("2022-01-01 12:00:00"), userDto1,
+        List.of(4, 4, 4, 4, 4, 4, 4, 4, 4, 4), List.of(4.0, 4.0, 4.0, 4.0, 4.0), 4.0);
   }
 
   @AfterEach
@@ -95,6 +103,31 @@ class UserControllerTest extends AbstractTest {
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
         List.of(ErrorResponse.USER_GET_NOT_FOUND))), content);
+  }
+
+  @Test
+  void getResults_Success() throws Exception {
+    when(resultService.getByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(List.of(resultDto1));
+
+    var mvcResult = mvc.perform(get(uri + userDto1.getId() + "/results")
+        .accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(List.of(resultDto1)), content);
+  }
+
+  @Test
+  void getResults_Empty() throws Exception {
+    when(resultService.getByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(Collections.emptyList());
+
+    var mvcResult = mvc.perform(get(uri + userDto1.getId() + "/results")
+            .accept(MediaType.APPLICATION_JSON))
+        .andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(Collections.emptyList()), content);
   }
 
   @Test
@@ -558,5 +591,29 @@ class UserControllerTest extends AbstractTest {
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
         List.of(ErrorResponse.USER_DOES_NOT_EXIST))), content);
+  }
+
+  @Test
+  void deleteResults_Success() throws Exception {
+    when(resultService.deleteByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(true);
+
+    var mvcResult = mvc.perform(delete(uri + userDto1.getId() + "/results").accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
+    assertTrue(Boolean.parseBoolean(content));
+  }
+
+  @Test
+  void deleteResults_NotFound() throws Exception {
+    when(resultService.deleteByUserId(ArgumentMatchers.any(UUID.class)))
+        .thenThrow(new NotFoundException(ErrorResponse.RESULT_DOES_NOT_EXIST));
+
+    var mvcResult = mvc.perform(delete(uri + userDto1.getId() + "/results").accept(MediaType.APPLICATION_JSON)).andReturn();
+    var content = mvcResult.getResponse().getContentAsString();
+
+    assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
+    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
+        List.of(ErrorResponse.RESULT_DOES_NOT_EXIST))), content);
   }
 }

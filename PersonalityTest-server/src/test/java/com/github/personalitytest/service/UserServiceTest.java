@@ -6,6 +6,7 @@ import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
 import com.github.personalitytest.model.User;
+import com.github.personalitytest.repository.ResultRepository;
 import com.github.personalitytest.repository.UserRepository;
 import com.github.personalitytest.type.Gender;
 import org.junit.jupiter.api.AfterEach;

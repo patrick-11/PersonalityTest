@@ -105,31 +105,6 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void findByUser_Success() throws Exception {
-    when(resultService.findByUser(ArgumentMatchers.any(UUID.class))).thenReturn(List.of(resultDto2));
-
-    var mvcResult = mvc.perform(get(uri + "findByUser/" + userDto1.getId())
-        .accept(MediaType.APPLICATION_JSON)).andReturn();
-    var content = mvcResult.getResponse().getContentAsString();
-
-    assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(List.of(resultDto2)), content);
-  }
-
-  @Test
-  void findByUser_Empty() throws Exception {
-    when(resultService.findByUser(ArgumentMatchers.any(UUID.class))).thenReturn(Collections.emptyList());
-
-    var mvcResult = mvc.perform(get(uri + "findByUser/" + userDto1.getId())
-            .accept(MediaType.APPLICATION_JSON))
-        .andReturn();
-    var content = mvcResult.getResponse().getContentAsString();
-
-    assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(Collections.emptyList()), content);
-  }
-
-  @Test
   void create_Success() throws Exception {
     when(resultService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenReturn(resultDto1);
@@ -295,30 +270,6 @@ class ResultControllerTest extends AbstractTest {
         .thenThrow(new NotFoundException(ErrorResponse.RESULT_DOES_NOT_EXIST));
 
     var mvcResult = mvc.perform(delete(uri + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
-    var content = mvcResult.getResponse().getContentAsString();
-
-    assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
-    assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
-        List.of(ErrorResponse.RESULT_DOES_NOT_EXIST))), content);
-  }
-
-  @Test
-  void deleteByUserId_Success() throws Exception {
-    when(resultService.deleteByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(true);
-
-    var mvcResult = mvc.perform(delete(uri + "user/" + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
-    var content = mvcResult.getResponse().getContentAsString();
-
-    assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
-    assertTrue(Boolean.parseBoolean(content));
-  }
-
-  @Test
-  void deleteByUserId_NotFound() throws Exception {
-    when(resultService.deleteByUserId(ArgumentMatchers.any(UUID.class)))
-        .thenThrow(new NotFoundException(ErrorResponse.RESULT_DOES_NOT_EXIST));
-
-    var mvcResult = mvc.perform(delete(uri + "user/" + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());

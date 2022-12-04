@@ -120,20 +120,20 @@ class ResultServiceTest extends AbstractTest {
 
   @Test
   void getByUserId_Success() {
-    when(resultRepository.findByUser(ArgumentMatchers.any(UUID.class))).thenReturn(List.of(result1));
-    var resultsDto = resultService.findByUser(userDto1.getId());
+    when(resultRepository.findByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(List.of(result1));
+    var resultsDto = resultService.getByUserId(userDto1.getId());
 
     assertEquals(1, resultsDto.size());
-    verify(resultRepository).findByUser(userDto1.getId());
+    verify(resultRepository).findByUserId(userDto1.getId());
   }
 
   @Test
   void getByUserId_NotFound() {
-    when(resultRepository.findByUser(ArgumentMatchers.any(UUID.class))).thenReturn(Collections.emptyList());
-    var resultsDto = resultService.findByUser(userDto1.getId());
+    when(resultRepository.findByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(Collections.emptyList());
+    var resultsDto = resultService.getByUserId(userDto1.getId());
 
     assertEquals(0, resultsDto.size());
-    verify(resultRepository).findByUser(userDto1.getId());
+    verify(resultRepository).findByUserId(userDto1.getId());
   }
 
   @Test
