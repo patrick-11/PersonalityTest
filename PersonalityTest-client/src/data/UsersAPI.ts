@@ -1,5 +1,6 @@
 import axios from "axios"
 import type { User } from "../hooks/reducer/UsersReducer"
+import type { Result } from "../hooks/reducer/ResultsReducer"
 import { errorCheck } from "../util/Util"
 
 const url = "http://localhost:8080/api/users/"
@@ -22,6 +23,15 @@ export const UsersAPI = {
         .catch(error => reject(errorCheck(error)))
     })
   },
+
+  getUserResults: (id: string) => {
+    return new Promise<Array<Result>>((resolve, reject) => {
+      axios({method: "GET", url: url + id + "/results"})
+        .then(response => resolve(response.data))
+        .catch(error => reject(errorCheck(error)))
+    })
+  },
+
 
   createUser: (user: User) => {
     return new Promise<User>((resolve, reject) => {

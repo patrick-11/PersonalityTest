@@ -23,14 +23,6 @@ export const ResultsAPI = {
     })
   },
 
-  getResultsByUserId: (userId: string) => {
-    return new Promise<Array<Result>>((resolve, reject) => {
-      axios({method: "GET", url: url + "findByUser/" + userId})
-        .then(response => resolve(response.data))
-        .catch(error => reject(errorCheck(error)))
-    })
-  },
-
   createResult: (userId: string, answers: Array<number>) => {
     return new Promise<Result>((resolve, reject) => {
       axios({method: "POST", url: url + userId, data: JSON.stringify({"answers": answers}), headers: {"Content-Type": "application/json"}})

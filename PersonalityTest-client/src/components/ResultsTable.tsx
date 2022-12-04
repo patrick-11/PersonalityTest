@@ -3,7 +3,6 @@ import React, { useState } from "react"
 import { Table, InputGroup, Form, Stack, Button } from "react-bootstrap"
 import { useNavigate } from "react-router-dom"
 import { Result } from "../hooks/reducer/ResultsReducer"
-import { convertTimestamp } from "../util/Util"
 
 
 interface ResultsTableInterface {
