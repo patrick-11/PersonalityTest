@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.UUID;
 
-public interface ControllerInter<T> {
+public interface ControllerBasic<T> {
 
   ResponseEntity<List<T>> getAll();
 

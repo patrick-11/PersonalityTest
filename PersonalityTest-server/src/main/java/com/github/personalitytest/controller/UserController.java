@@ -21,7 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @CrossOrigin
 @RequestMapping("api/users")
-public class UserController implements ControllerInter<UserDto> {
+public class UserController implements ControllerBasic<UserDto> {
 
   @Autowired
   UserService userService;

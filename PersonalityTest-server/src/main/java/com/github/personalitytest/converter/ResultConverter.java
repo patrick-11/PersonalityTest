@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class ResultConverter implements ConverterInter<Result, ResultDto> {
+public class ResultConverter implements ConverterBasic<Result, ResultDto> {
 
   @Override
   public ResultDto convertEntityToDto(Result result) {

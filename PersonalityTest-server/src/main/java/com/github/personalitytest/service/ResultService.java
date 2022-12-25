@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class ResultService implements ServiceInter<ResultDto> {
+public class ResultService implements ServiceBasic<ResultDto> {
 
   @Autowired
   ResultRepository resultRepository;

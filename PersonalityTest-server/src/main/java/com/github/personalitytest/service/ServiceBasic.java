@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public interface ServiceInter<T> {
+public interface ServiceBasic<T> {
 
   List<T> getAll();
 
