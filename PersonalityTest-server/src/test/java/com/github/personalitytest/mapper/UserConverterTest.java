@@ -1,4 +1,4 @@
-package com.github.personalitytest.converter;
+package com.github.personalitytest.mapper;
 
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.model.User;
@@ -25,7 +25,7 @@ class UserConverterTest {
 
   @Test
   void convertEntityToDto() {
-    var dto = new UserConverter().convertEntityToDto(user);
+    var dto = new UserMapper().convertEntityToDto(user);
 
     assertThat(dto).isNotNull();
     assertEquals(user.getId(), dto.getId());
@@ -36,7 +36,7 @@ class UserConverterTest {
 
   @Test
   void convertDtoToEntity() {
-    var entity = new UserConverter().convertDtoToEntity(userDto);
+    var entity = new UserMapper().convertDtoToEntity(userDto);
 
     assertThat(entity).isNotNull();
     assertEquals(userDto.getId(), entity.getId());

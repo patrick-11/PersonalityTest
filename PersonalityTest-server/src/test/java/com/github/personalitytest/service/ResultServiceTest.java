@@ -1,8 +1,8 @@
 package com.github.personalitytest.service;
 
 import com.github.personalitytest.AbstractTest;
-import com.github.personalitytest.converter.ResultConverter;
-import com.github.personalitytest.converter.UserConverter;
+import com.github.personalitytest.mapper.ResultMapper;
+import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
@@ -50,8 +50,8 @@ class ResultServiceTest extends AbstractTest {
   void setUp() {
     autoCloseable = MockitoAnnotations.openMocks(this);
 
-    var userConverter = new UserConverter();
-    var resultConverter = new ResultConverter();
+    var userConverter = new UserMapper();
+    var resultConverter = new ResultMapper();
     var userService = new UserService(userRepository, userConverter);
     resultService = new ResultService(resultRepository, userService, resultConverter, userConverter);
 

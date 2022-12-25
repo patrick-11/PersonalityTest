@@ -1,7 +1,7 @@
 package com.github.personalitytest.service;
 
-import com.github.personalitytest.converter.ResultConverter;
-import com.github.personalitytest.converter.UserConverter;
+import com.github.personalitytest.mapper.ResultMapper;
+import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
@@ -23,9 +23,9 @@ public class ResultService implements ServiceBasic<ResultDto> {
   @Autowired
   UserService userService;
   @Autowired
-  ResultConverter resultConverter;
+  ResultMapper resultConverter;
   @Autowired
-  UserConverter userConverter;
+  UserMapper userConverter;
 
   @Override
   public List<ResultDto> getAll() {

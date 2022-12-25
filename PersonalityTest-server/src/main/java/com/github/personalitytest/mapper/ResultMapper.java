@@ -1,4 +1,4 @@
-package com.github.personalitytest.converter;
+package com.github.personalitytest.mapper;
 
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.model.Result;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class ResultConverter implements ConverterBasic<Result, ResultDto> {
+public class ResultMapper implements MapperBasic<Result, ResultDto> {
 
   @Override
   public ResultDto convertEntityToDto(Result result) {
