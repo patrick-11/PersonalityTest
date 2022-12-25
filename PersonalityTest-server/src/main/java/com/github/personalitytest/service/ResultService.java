@@ -1,10 +1,10 @@
 package com.github.personalitytest.service;
 
-import com.github.personalitytest.mapper.ResultMapper;
-import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
+import com.github.personalitytest.mapper.ResultMapper;
+import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.repository.ResultRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,24 +22,20 @@ public class ResultService implements ServiceBasic<ResultDto> {
   ResultRepository resultRepository;
   @Autowired
   UserService userService;
-  @Autowired
-  ResultMapper resultConverter;
-  @Autowired
-  UserMapper userConverter;
 
   @Override
   public List<ResultDto> getAll() {
-    return resultRepository.findAll().stream().map(resultConverter::convertEntityToDto).toList();
+    return resultRepository.findAll().stream().map(ResultMapper.INSTANCE::toDto).toList();
   }
 
   @Override
   public ResultDto get(UUID id) {
-    return resultRepository.findById(id).map(resultConverter::convertEntityToDto)
-        .orElseThrow(() -> new NotFoundException(ErrorResponse.RESULT_GET_NOT_FOUND));
+    return resultRepository.findById(id).map(ResultMapper.INSTANCE::toDto)
+            .orElseThrow(() -> new NotFoundException(ErrorResponse.RESULT_GET_NOT_FOUND));
   }
 
   public List<ResultDto> getByUserId(UUID userId) {
-    return resultRepository.findByUserId(userId).stream().map(resultConverter::convertEntityToDto).toList();
+    return resultRepository.findByUserId(userId).stream().map(ResultMapper.INSTANCE::toDto).toList();
   }
 
   @Override
@@ -49,8 +45,8 @@ public class ResultService implements ServiceBasic<ResultDto> {
 
   @Override
   public ResultDto create(UUID userId, ResultDto resultDto) {
-    var user = userConverter.convertDtoToEntity(userService.get(userId));
-    var result = resultConverter.convertDtoToEntity(resultDto).toBuilder().id(UUID.randomUUID()).user(user).build();
+    var user = UserMapper.INSTANCE.toEntity(userService.get(userId));
+    var result = ResultMapper.INSTANCE.toEntity(resultDto).toBuilder().id(UUID.randomUUID()).user(user).build();
     result.calculateResults();
     result.calculateAvgScore();
     resultRepository.save(result);

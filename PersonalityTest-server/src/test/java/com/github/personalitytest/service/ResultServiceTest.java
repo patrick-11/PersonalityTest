@@ -1,12 +1,12 @@
 package com.github.personalitytest.service;
 
 import com.github.personalitytest.AbstractTest;
-import com.github.personalitytest.mapper.ResultMapper;
-import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
+import com.github.personalitytest.mapper.ResultMapper;
+import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.model.Result;
 import com.github.personalitytest.model.User;
 import com.github.personalitytest.repository.ResultRepository;
@@ -50,23 +50,21 @@ class ResultServiceTest extends AbstractTest {
   void setUp() {
     autoCloseable = MockitoAnnotations.openMocks(this);
 
-    var userConverter = new UserMapper();
-    var resultConverter = new ResultMapper();
-    var userService = new UserService(userRepository, userConverter);
-    resultService = new ResultService(resultRepository, userService, resultConverter, userConverter);
+    var userService = new UserService(userRepository);
+    resultService = new ResultService(resultRepository, userService);
 
     user1 = User.builder().id(UUID.randomUUID()).name("Patrick").gender(Gender.MALE).age(25).build();
-    userDto1 = userConverter.convertEntityToDto(user1);
+    userDto1 = UserMapper.INSTANCE.toDto(user1);
 
     result1 = Result.builder().id(UUID.randomUUID()).user(user1).answers(List.of(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)).build();
     result1.calculateResults();
     result1.calculateAvgScore();
-    resultDto1 = resultConverter.convertEntityToDto(result1);
+    resultDto1 = ResultMapper.INSTANCE.toDto(result1);
 
     result2 = Result.builder().id(UUID.randomUUID()).user(user1).answers(List.of(4, 4, 4, 4, 4, 4, 4, 4, 4, 4)).build();
     result2.calculateResults();
     result2.calculateAvgScore();
-    resultDto2 = resultConverter.convertEntityToDto(result2);
+    resultDto2 = ResultMapper.INSTANCE.toDto(result2);
 
   }
 

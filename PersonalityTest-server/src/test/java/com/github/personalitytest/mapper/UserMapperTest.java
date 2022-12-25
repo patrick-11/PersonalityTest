@@ -25,7 +25,7 @@ class UserMapperTest {
 
   @Test
   void convertEntityToDto() {
-    var dto = new UserMapper().toDto(user);
+    var dto = UserMapper.INSTANCE.toDto(user);
 
     assertThat(dto).isNotNull();
     assertEquals(user.getId(), dto.getId());
@@ -36,7 +36,7 @@ class UserMapperTest {
 
   @Test
   void convertDtoToEntity() {
-    var entity = new UserMapper().toEntity(userDto);
+    var entity = UserMapper.INSTANCE.toEntity(userDto);
 
     assertThat(entity).isNotNull();
     assertEquals(userDto.getId(), entity.getId());

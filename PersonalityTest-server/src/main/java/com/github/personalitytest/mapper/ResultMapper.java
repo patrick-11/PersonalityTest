@@ -2,29 +2,19 @@ package com.github.personalitytest.mapper;
 
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.model.Result;
-import com.github.personalitytest.type.Gender;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 
 
-@Component
-public class ResultMapper implements MapperBasic<Result, ResultDto> {
+@Mapper
+public interface ResultMapper extends MapperBasic<Result, ResultDto> {
 
-  @Override
-  public ResultDto convertEntityToDto(Result result) {
-    var resultDto = new ModelMapper().map(result, ResultDto.class);
-    var userDto = resultDto.getUser();
-    userDto.setGender(Gender.valueOf(userDto.getGender()).getValue());
-    resultDto.setUser(userDto);
-    return resultDto;
-  }
+  ResultMapper INSTANCE = Mappers.getMapper(ResultMapper.class);
 
   @Override
-  public Result convertDtoToEntity(ResultDto resultDto) {
-    if (resultDto.getUser() != null) {
-      var userDto = resultDto.getUser();
-      userDto.setGender(userDto.getGender().toUpperCase());
-    }
-    return new ModelMapper().map(resultDto, Result.class);
-  }
+    //@Mapping(source = "gender.value", target = "gender")
+  ResultDto toDto(Result entity);
+
+  @Override
+  Result toEntity(ResultDto dto);
 }

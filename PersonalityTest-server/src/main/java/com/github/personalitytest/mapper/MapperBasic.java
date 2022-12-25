@@ -2,7 +2,7 @@ package com.github.personalitytest.mapper;
 
 public interface MapperBasic<E, D> {
 
-  D convertEntityToDto(E entity);
+  D toDto(E entity);
 
-  E convertDtoToEntity(D dto);
+  E toEntity(D dto);
 }
