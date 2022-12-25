@@ -12,7 +12,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class UserConverterTest {
+class UserMapperTest {
 
   private User user;
   private UserDto userDto;
@@ -25,7 +25,7 @@ class UserConverterTest {
 
   @Test
   void convertEntityToDto() {
-    var dto = new UserMapper().convertEntityToDto(user);
+    var dto = new UserMapper().toDto(user);
 
     assertThat(dto).isNotNull();
     assertEquals(user.getId(), dto.getId());
@@ -36,7 +36,7 @@ class UserConverterTest {
 
   @Test
   void convertDtoToEntity() {
-    var entity = new UserMapper().convertDtoToEntity(userDto);
+    var entity = new UserMapper().toEntity(userDto);
 
     assertThat(entity).isNotNull();
     assertEquals(userDto.getId(), entity.getId());
