@@ -14,7 +14,7 @@ services:
       - POSTGRES_PASSWORD=postgres
 
   personalitytest-server:
-    build: ./personalityTest-server
+    build: ./PersonalityTest-server
     container_name: personalityTest-server
     environment:
       - DB_SERVER=personalityTest-postgres
@@ -27,7 +27,7 @@ services:
       - personalitytest-postgres
 
   personalitytest-client:
-    build: ./personalityTest-client
+    build: ./PersonalityTest-client
     container_name: personalityTest-client
     ports:
       - 3000:3000
