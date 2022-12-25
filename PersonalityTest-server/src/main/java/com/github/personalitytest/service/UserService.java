@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class UserService implements ServiceInter<UserDto> {
+public class UserService implements ServiceBasic<UserDto> {
 
   @Autowired
   UserRepository userRepository;

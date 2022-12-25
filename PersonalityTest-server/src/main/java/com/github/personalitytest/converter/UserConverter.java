@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-public class UserConverter implements ConverterInter<User, UserDto> {
+public class UserConverter implements ConverterBasic<User, UserDto> {
 
   @Override
   public UserDto convertEntityToDto(User user) {

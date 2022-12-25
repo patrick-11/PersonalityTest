@@ -18,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @CrossOrigin
 @RequestMapping("api/results")
-public class ResultController implements ControllerInter<ResultDto> {
+public class ResultController implements ControllerBasic<ResultDto> {
 
   @Autowired
   ResultService resultService;
