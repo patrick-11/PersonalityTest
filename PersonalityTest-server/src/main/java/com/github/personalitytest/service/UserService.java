@@ -29,7 +29,7 @@ public class UserService implements ServiceBasic<UserDto> {
   @Override
   public UserDto get(UUID id) {
     return userRepository.findById(id).map(UserMapper.INSTANCE::toDto)
-            .orElseThrow(() -> new NotFoundException(ErrorResponse.USER_GET_NOT_FOUND));
+        .orElseThrow(() -> new NotFoundException(ErrorResponse.USER_GET_NOT_FOUND));
   }
 
   @Override

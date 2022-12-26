@@ -31,7 +31,7 @@ public class ResultService implements ServiceBasic<ResultDto> {
   @Override
   public ResultDto get(UUID id) {
     return resultRepository.findById(id).map(ResultMapper.INSTANCE::toDto)
-            .orElseThrow(() -> new NotFoundException(ErrorResponse.RESULT_GET_NOT_FOUND));
+        .orElseThrow(() -> new NotFoundException(ErrorResponse.RESULT_GET_NOT_FOUND));
   }
 
   public List<ResultDto> getByUserId(UUID userId) {
