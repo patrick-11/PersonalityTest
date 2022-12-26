@@ -24,16 +24,21 @@ public class Result {
   public static final String ANSWERS_VALUE_MAX = "7";
 
   @Id
+  @Column(nullable = false)
   private UUID id;
   @CreationTimestamp
+  @Column(nullable = false)
   private Timestamp completed;
   @ManyToOne
-  @JoinColumn
+  @JoinColumn(nullable = false)
   private User user;
   @ElementCollection(targetClass = Integer.class)
+  @Column(nullable = false)
   private List<Integer> answers;
   @ElementCollection(targetClass = Double.class)
+  @Column(nullable = false)
   private List<Double> results;
+  @Column(nullable = false)
   private double avgScore;
 
   public void calculateResults() {
