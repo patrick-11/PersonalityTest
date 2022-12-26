@@ -34,7 +34,7 @@ class ResultMapperTest {
   }
 
   @Test
-  void convertEntityToDto() {
+  void toDto() {
     var dto = ResultMapper.INSTANCE.toDto(result);
 
     assertThat(dto).isNotNull();
@@ -50,7 +50,7 @@ class ResultMapperTest {
   }
 
   @Test
-  void convertDtoToEntity() {
+  void toEntity() {
     var entity = ResultMapper.INSTANCE.toEntity(resultDto);
 
     assertThat(entity).isNotNull();
@@ -58,7 +58,7 @@ class ResultMapperTest {
     assertEquals(resultDto.getCompleted(), entity.getCompleted());
     assertEquals(resultDto.getUser().getId(), entity.getUser().getId());
     assertEquals(resultDto.getUser().getName(), entity.getUser().getName());
-    assertEquals(resultDto.getUser().getGender(), entity.getUser().getGender().toString());
+    assertEquals(resultDto.getUser().getGender(), entity.getUser().getGender().getValue());
     assertEquals(resultDto.getUser().getAge(), entity.getUser().getAge());
     assertEquals(resultDto.getAnswers(), entity.getAnswers());
     assertEquals(resultDto.getResults(), entity.getResults());

@@ -103,7 +103,7 @@ class UserServiceTest extends AbstractTest {
     assertThat(userDto).isNotNull();
     verify(userRepository).save(captor.capture());
     assertEquals(userDto1.getName(), captor.getValue().getName());
-    assertEquals(userDto1.getGender(), captor.getValue().getGender().toString());
+    assertEquals(userDto1.getGender(), captor.getValue().getGender().getValue());
     assertEquals(userDto1.getAge(), captor.getValue().getAge());
   }
 
@@ -117,7 +117,7 @@ class UserServiceTest extends AbstractTest {
     verify(userRepository).save(captor.capture());
     assertEquals(userDto1.getId(), captor.getValue().getId());
     assertEquals(userDto1.getName(), captor.getValue().getName());
-    assertEquals(userDto1.getGender(), captor.getValue().getGender().toString());
+    assertEquals(userDto1.getGender(), captor.getValue().getGender().getValue());
     assertEquals(userDto1.getAge(), captor.getValue().getAge());
   }
 

@@ -146,7 +146,7 @@ class ResultServiceTest extends AbstractTest {
     assertEquals(resultDto1.getCompleted(), captor.getValue().getCompleted());
     assertEquals(resultDto1.getUser().getId(), captor.getValue().getUser().getId());
     assertEquals(resultDto1.getUser().getName(), captor.getValue().getUser().getName());
-    assertEquals(resultDto1.getUser().getGender(), captor.getValue().getUser().getGender().toString());
+    assertEquals(resultDto1.getUser().getGender(), captor.getValue().getUser().getGender().getValue());
     assertEquals(resultDto1.getUser().getAge(), captor.getValue().getUser().getAge());
     assertEquals(resultDto1.getAnswers(), captor.getValue().getAnswers());
     assertEquals(resultDto1.getResults(), captor.getValue().getResults());

@@ -24,7 +24,7 @@ class UserMapperTest {
   }
 
   @Test
-  void convertEntityToDto() {
+  void toDto() {
     var dto = UserMapper.INSTANCE.toDto(user);
 
     assertThat(dto).isNotNull();
@@ -35,13 +35,13 @@ class UserMapperTest {
   }
 
   @Test
-  void convertDtoToEntity() {
+  void toEntity() {
     var entity = UserMapper.INSTANCE.toEntity(userDto);
 
     assertThat(entity).isNotNull();
     assertEquals(userDto.getId(), entity.getId());
     assertEquals(userDto.getName(), entity.getName());
-    assertEquals(userDto.getGender(), entity.getGender().toString());
+    assertEquals(userDto.getGender(), entity.getGender().getValue());
     assertEquals(userDto.getAge(), entity.getAge());
   }
 }
