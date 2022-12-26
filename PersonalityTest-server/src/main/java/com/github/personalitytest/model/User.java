@@ -1,6 +1,7 @@
 package com.github.personalitytest.model;
 
 import com.github.personalitytest.type.Gender;
+import com.github.personalitytest.type.converter.GenderAttributeConverter;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +29,7 @@ public class User {
   @Column(nullable = false)
   private String name;
   @Column(nullable = false)
+  @Convert(converter = GenderAttributeConverter.class)
   private Gender gender;
   @Column(nullable = false)
   private int age;

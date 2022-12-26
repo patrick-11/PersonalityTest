@@ -50,7 +50,7 @@ public class UserService implements ServiceBasic<UserDto> {
   public UserDto update(UUID id, UserDto userDto) {
     var user = userRepository.findById(id)
         .orElseThrow(() -> new NotFoundException(ErrorResponse.USER_UPDATE_NOT_FOUND))
-        .toBuilder().name(userDto.getName()).gender(Gender.fromName(userDto.getGender())).age(userDto.getAge()).build();
+        .toBuilder().name(userDto.getName()).gender(Gender.fromValue(userDto.getGender())).age(userDto.getAge()).build();
     userRepository.save(user);
     return get(user.getId());
   }
