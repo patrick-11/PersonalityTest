@@ -11,6 +11,8 @@ import com.github.personalitytest.model.Result;
 import com.github.personalitytest.model.User;
 import com.github.personalitytest.repository.ResultRepository;
 import com.github.personalitytest.repository.UserRepository;
+import com.github.personalitytest.service.impl.ResultServiceImpl;
+import com.github.personalitytest.service.impl.UserServiceImpl;
 import com.github.personalitytest.type.Gender;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -49,9 +51,7 @@ class ResultServiceTest extends AbstractTest {
   @BeforeEach
   void setUp() {
     autoCloseable = MockitoAnnotations.openMocks(this);
-
-    var userService = new UserService(userRepository);
-    resultService = new ResultService(resultRepository, userService);
+    resultService = new ResultServiceImpl(resultRepository, new UserServiceImpl(userRepository));
 
     user1 = User.builder().id(UUID.randomUUID()).name("Patrick").gender(Gender.MALE).age(25).build();
     userDto1 = UserMapper.INSTANCE.toDto(user1);

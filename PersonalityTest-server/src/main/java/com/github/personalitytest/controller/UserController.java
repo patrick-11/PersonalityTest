@@ -5,11 +5,9 @@ import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.service.ResultService;
 import com.github.personalitytest.service.UserService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -17,16 +15,14 @@ import java.util.List;
 import java.util.UUID;
 
 
-@Controller
-@AllArgsConstructor
+@RestController
+@RequiredArgsConstructor
 @CrossOrigin
 @RequestMapping("api/users")
 public class UserController implements ControllerBasic<UserDto> {
 
-  @Autowired
-  UserService userService;
-  @Autowired
-  ResultService resultService;
+  private final UserService userService;
+  private final ResultService resultService;
 
   @GetMapping("/")
   public ResponseEntity<List<UserDto>> getAll() {
@@ -48,6 +44,11 @@ public class UserController implements ControllerBasic<UserDto> {
   @PostMapping("/")
   public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto user) {
     return new ResponseEntity<>(userService.create(user), HttpStatus.CREATED);
+  }
+
+  @Override
+  public ResponseEntity<UserDto> create(UUID uuid, UserDto dto) {
+    return null;
   }
 
   @PostMapping("/{id}")

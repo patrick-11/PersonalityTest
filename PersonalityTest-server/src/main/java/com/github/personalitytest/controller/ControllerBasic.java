@@ -13,6 +13,8 @@ public interface ControllerBasic<T> {
 
   ResponseEntity<T> create(T dto);
 
+  ResponseEntity<T> create(UUID uuid, T dto);
+
   ResponseEntity<T> update(UUID uuid, T dto);
 
   ResponseEntity<Boolean> delete(UUID uuid);
