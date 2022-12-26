@@ -1,9 +1,9 @@
 package com.github.personalitytest.service;
 
-import com.github.personalitytest.converter.UserConverter;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
+import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.repository.UserRepository;
 import com.github.personalitytest.type.Gender;
 import lombok.AllArgsConstructor;
@@ -20,30 +20,28 @@ public class UserService implements ServiceBasic<UserDto> {
 
   @Autowired
   UserRepository userRepository;
-  @Autowired
-  UserConverter userConverter;
 
   @Override
   public List<UserDto> getAll() {
-    return userRepository.findAll().stream().map(userConverter::convertEntityToDto).toList();
+    return userRepository.findAll().stream().map(UserMapper.INSTANCE::toDto).toList();
   }
 
   @Override
   public UserDto get(UUID id) {
-    return userRepository.findById(id).map(userConverter::convertEntityToDto)
+    return userRepository.findById(id).map(UserMapper.INSTANCE::toDto)
         .orElseThrow(() -> new NotFoundException(ErrorResponse.USER_GET_NOT_FOUND));
   }
 
   @Override
   public UserDto create(UserDto userDto) {
-    var user = userConverter.convertDtoToEntity(userDto).toBuilder().id(UUID.randomUUID()).build();
+    var user = UserMapper.INSTANCE.toEntity(userDto).toBuilder().id(UUID.randomUUID()).build();
     userRepository.save(user);
     return get(user.getId());
   }
 
   @Override
   public UserDto create(UUID id, UserDto userDto) {
-    var user = userConverter.convertDtoToEntity(userDto).toBuilder().id(id).build();
+    var user = UserMapper.INSTANCE.toEntity(userDto).toBuilder().id(id).build();
     userRepository.save(user);
     return get(user.getId());
   }

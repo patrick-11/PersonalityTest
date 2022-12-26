@@ -1,4 +1,4 @@
-package com.github.personalitytest.converter;
+package com.github.personalitytest.mapper;
 
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
@@ -16,7 +16,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ResultConverterTest {
+class ResultMapperTest {
 
   private User user;
   private UserDto userDto;
@@ -34,8 +34,8 @@ class ResultConverterTest {
   }
 
   @Test
-  void convertEntityToDto() {
-    var dto = new ResultConverter().convertEntityToDto(result);
+  void toDto() {
+    var dto = ResultMapper.INSTANCE.toDto(result);
 
     assertThat(dto).isNotNull();
     assertEquals(result.getId(), dto.getId());
@@ -50,15 +50,15 @@ class ResultConverterTest {
   }
 
   @Test
-  void convertDtoToEntity() {
-    var entity = new ResultConverter().convertDtoToEntity(resultDto);
+  void toEntity() {
+    var entity = ResultMapper.INSTANCE.toEntity(resultDto);
 
     assertThat(entity).isNotNull();
     assertEquals(resultDto.getId(), entity.getId());
     assertEquals(resultDto.getCompleted(), entity.getCompleted());
     assertEquals(resultDto.getUser().getId(), entity.getUser().getId());
     assertEquals(resultDto.getUser().getName(), entity.getUser().getName());
-    assertEquals(resultDto.getUser().getGender(), entity.getUser().getGender().toString());
+    assertEquals(resultDto.getUser().getGender(), entity.getUser().getGender().getValue());
     assertEquals(resultDto.getUser().getAge(), entity.getUser().getAge());
     assertEquals(resultDto.getAnswers(), entity.getAnswers());
     assertEquals(resultDto.getResults(), entity.getResults());

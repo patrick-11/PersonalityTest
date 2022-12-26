@@ -1,12 +1,11 @@
 package com.github.personalitytest.service;
 
 import com.github.personalitytest.AbstractTest;
-import com.github.personalitytest.converter.UserConverter;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
+import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.model.User;
-import com.github.personalitytest.repository.ResultRepository;
 import com.github.personalitytest.repository.UserRepository;
 import com.github.personalitytest.type.Gender;
 import org.junit.jupiter.api.AfterEach;
@@ -43,14 +42,13 @@ class UserServiceTest extends AbstractTest {
   @BeforeEach
   void setUp() {
     autoCloseable = MockitoAnnotations.openMocks(this);
-    var userConverter = new UserConverter();
-    userService = new UserService(userRepository, userConverter);
+    userService = new UserService(userRepository);
 
     user1 = User.builder().id(UUID.randomUUID()).name("Patrick").gender(Gender.MALE).age(25).build();
-    userDto1 = userConverter.convertEntityToDto(user1);
+    userDto1 = UserMapper.INSTANCE.toDto(user1);
 
     user2 = User.builder().id(UUID.randomUUID()).name("Hannes").gender(Gender.MALE).age(24).build();
-    userDto2 = userConverter.convertEntityToDto(user2);
+    userDto2 = UserMapper.INSTANCE.toDto(user2);
   }
 
   @AfterEach
@@ -105,7 +103,7 @@ class UserServiceTest extends AbstractTest {
     assertThat(userDto).isNotNull();
     verify(userRepository).save(captor.capture());
     assertEquals(userDto1.getName(), captor.getValue().getName());
-    assertEquals(userDto1.getGender(), captor.getValue().getGender().toString());
+    assertEquals(userDto1.getGender(), captor.getValue().getGender().getValue());
     assertEquals(userDto1.getAge(), captor.getValue().getAge());
   }
 
@@ -119,7 +117,7 @@ class UserServiceTest extends AbstractTest {
     verify(userRepository).save(captor.capture());
     assertEquals(userDto1.getId(), captor.getValue().getId());
     assertEquals(userDto1.getName(), captor.getValue().getName());
-    assertEquals(userDto1.getGender(), captor.getValue().getGender().toString());
+    assertEquals(userDto1.getGender(), captor.getValue().getGender().getValue());
     assertEquals(userDto1.getAge(), captor.getValue().getAge());
   }
 

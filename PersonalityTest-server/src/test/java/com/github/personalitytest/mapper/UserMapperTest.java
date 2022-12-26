@@ -1,4 +1,4 @@
-package com.github.personalitytest.converter;
+package com.github.personalitytest.mapper;
 
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.model.User;
@@ -12,7 +12,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class UserConverterTest {
+class UserMapperTest {
 
   private User user;
   private UserDto userDto;
@@ -24,8 +24,8 @@ class UserConverterTest {
   }
 
   @Test
-  void convertEntityToDto() {
-    var dto = new UserConverter().convertEntityToDto(user);
+  void toDto() {
+    var dto = UserMapper.INSTANCE.toDto(user);
 
     assertThat(dto).isNotNull();
     assertEquals(user.getId(), dto.getId());
@@ -35,13 +35,13 @@ class UserConverterTest {
   }
 
   @Test
-  void convertDtoToEntity() {
-    var entity = new UserConverter().convertDtoToEntity(userDto);
+  void toEntity() {
+    var entity = UserMapper.INSTANCE.toEntity(userDto);
 
     assertThat(entity).isNotNull();
     assertEquals(userDto.getId(), entity.getId());
     assertEquals(userDto.getName(), entity.getName());
-    assertEquals(userDto.getGender(), entity.getGender().toString());
+    assertEquals(userDto.getGender(), entity.getGender().getValue());
     assertEquals(userDto.getAge(), entity.getAge());
   }
 }
