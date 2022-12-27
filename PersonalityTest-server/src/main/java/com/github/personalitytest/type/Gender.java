@@ -1,7 +1,10 @@
 package com.github.personalitytest.type;
 
+import com.github.personalitytest.exception.ErrorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.Objects;
 
 @AllArgsConstructor
 @Getter
@@ -12,14 +15,14 @@ public enum Gender {
 
   private final String value;
 
-  public static Gender fromName(String name) {
-    if (name != null) {
-      for (var type : Gender.values()) {
-        if (type.name().equalsIgnoreCase(name.trim())) {
-          return type;
+  public static Gender fromValue(String value) {
+    if (value != null) {
+      for (var gender : Gender.values()) {
+        if (Objects.equals(gender.getValue(), value)) {
+          return gender;
         }
       }
     }
-    return null;
+    throw new IllegalArgumentException(ErrorResponse.GENDER_MAPPING_ERROR);
   }
 }

@@ -7,6 +7,7 @@ import com.github.personalitytest.exception.NotFoundException;
 import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.model.User;
 import com.github.personalitytest.repository.UserRepository;
+import com.github.personalitytest.service.impl.UserServiceImpl;
 import com.github.personalitytest.type.Gender;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,7 +43,7 @@ class UserServiceTest extends AbstractTest {
   @BeforeEach
   void setUp() {
     autoCloseable = MockitoAnnotations.openMocks(this);
-    userService = new UserService(userRepository);
+    userService = new UserServiceImpl(userRepository);
 
     user1 = User.builder().id(UUID.randomUUID()).name("Patrick").gender(Gender.MALE).age(25).build();
     userDto1 = UserMapper.INSTANCE.toDto(user1);

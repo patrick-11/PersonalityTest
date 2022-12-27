@@ -32,6 +32,8 @@ public class ErrorResponse {
   public static final String RESULT_VALIDATION_ANSWER_SIZE_ERROR = "Answers must have 10 entries!";
   public static final String RESULT_VALIDATION_ANSWER_VALUE_ERROR = "Answers must have a value between 1 and 7!";
 
+  public static final String GENDER_MAPPING_ERROR = "Gender value cannot be mapped to an Gender type!";
+
   private String message;
   private List<String> details;
 }

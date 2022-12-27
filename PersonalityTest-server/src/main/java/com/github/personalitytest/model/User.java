@@ -1,12 +1,10 @@
 package com.github.personalitytest.model;
 
 import com.github.personalitytest.type.Gender;
+import com.github.personalitytest.type.converter.GenderAttributeConverter;
 import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Set;
 import java.util.UUID;
 
@@ -26,9 +24,14 @@ public class User {
   public static final String AGE_VALUE_MAX = "120";
 
   @Id
+  @Column(nullable = false)
   private UUID id;
+  @Column(nullable = false)
   private String name;
+  @Column(nullable = false)
+  @Convert(converter = GenderAttributeConverter.class)
   private Gender gender;
+  @Column(nullable = false)
   private int age;
   @ToString.Exclude
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
