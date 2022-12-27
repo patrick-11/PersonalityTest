@@ -22,6 +22,7 @@ public class Result {
   public static final int ANSWERS_SIZE = 10;
   public static final String ANSWERS_VALUE_MIN = "1";
   public static final String ANSWERS_VALUE_MAX = "7";
+  public static final String COMPLETED_TIMESTAMP_PATTERN = "dd.MM.yy - HH:mm";
 
   @Id
   @Column(nullable = false)

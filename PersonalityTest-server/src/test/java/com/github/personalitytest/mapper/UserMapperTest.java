@@ -1,5 +1,6 @@
 package com.github.personalitytest.mapper;
 
+import com.github.personalitytest.AbstractTest;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.model.User;
 import com.github.personalitytest.type.Gender;
@@ -12,15 +13,15 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class UserMapperTest {
+class UserMapperTest extends AbstractTest {
 
   private User user;
   private UserDto userDto;
 
   @BeforeEach
   void setUp() {
-    user = new User(UUID.randomUUID(), "Patrick", Gender.MALE, 25, Collections.emptySet());
-    userDto = new UserDto(user.getId(), "Patrick", "Male", 25);
+    user = new User(UUID.randomUUID(), NAME_1, Gender.MALE, AGE_1, Collections.emptySet());
+    userDto = new UserDto(user.getId(), NAME_1, Gender.MALE.getValue(), AGE_1);
   }
 
   @Test
