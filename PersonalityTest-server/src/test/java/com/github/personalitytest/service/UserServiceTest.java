@@ -45,10 +45,9 @@ class UserServiceTest extends AbstractTest {
     autoCloseable = MockitoAnnotations.openMocks(this);
     userService = new UserServiceImpl(userRepository);
 
-    user1 = User.builder().id(UUID.randomUUID()).name("Patrick").gender(Gender.MALE).age(25).build();
+    user1 = User.builder().id(UUID.randomUUID()).name(NAME_1).gender(Gender.MALE).age(AGE_1).build();
     userDto1 = UserMapper.INSTANCE.toDto(user1);
-
-    user2 = User.builder().id(UUID.randomUUID()).name("Hannes").gender(Gender.MALE).age(24).build();
+    user2 = User.builder().id(UUID.randomUUID()).name(NAME_2).gender(Gender.MALE).age(AGE_2).build();
     userDto2 = UserMapper.INSTANCE.toDto(user2);
   }
 

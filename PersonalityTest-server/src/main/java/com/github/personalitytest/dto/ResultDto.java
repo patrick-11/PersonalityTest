@@ -21,7 +21,7 @@ import java.util.UUID;
 public class ResultDto {
 
   private UUID id;
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yy - HH:mm")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Result.COMPLETED_TIMESTAMP_PATTERN)
   private Timestamp completed;
   private UserDto user;
   @NotEmpty(message = ErrorResponse.RESULT_VALIDATION_ANSWER_EMPTY_ERROR)

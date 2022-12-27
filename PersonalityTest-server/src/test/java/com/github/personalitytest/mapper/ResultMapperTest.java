@@ -1,5 +1,6 @@
 package com.github.personalitytest.mapper;
 
+import com.github.personalitytest.AbstractTest;
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.model.Result;
@@ -8,15 +9,13 @@ import com.github.personalitytest.type.Gender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class ResultMapperTest {
+class ResultMapperTest extends AbstractTest {
 
   private User user;
   private UserDto userDto;
@@ -25,12 +24,10 @@ class ResultMapperTest {
 
   @BeforeEach
   void setUp() {
-    user = new User(UUID.randomUUID(), "Patrick", Gender.MALE, 25, Collections.emptySet());
-    userDto = new UserDto(user.getId(), "Patrick", Gender.MALE.getValue(), 25);
-    result = new Result(UUID.randomUUID(), Timestamp.valueOf("2022-01-01 12:00:00"), user,
-        List.of(4, 4, 4, 4, 4, 4, 4, 4, 4, 4), List.of(4.0, 4.0, 4.0, 4.0, 4.0), 4.0);
-    resultDto = new ResultDto(result.getId(), Timestamp.valueOf("2022-01-01 12:00:00"), userDto,
-        List.of(4, 4, 4, 4, 4, 4, 4, 4, 4, 4), List.of(4.0, 4.0, 4.0, 4.0, 4.0), 4.0);
+    user = new User(UUID.randomUUID(), NAME_1, Gender.MALE, AGE_1, Collections.emptySet());
+    userDto = new UserDto(user.getId(), NAME_1, Gender.MALE.getValue(), AGE_1);
+    result = new Result(UUID.randomUUID(), TIMESTAMP, user, ANSWERS_2, RESULTS_2, AVG_SCORE_2);
+    resultDto = new ResultDto(result.getId(), TIMESTAMP, userDto, ANSWERS_2, RESULTS_2, AVG_SCORE_2);
   }
 
   @Test

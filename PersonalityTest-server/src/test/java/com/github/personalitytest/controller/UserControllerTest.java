@@ -18,7 +18,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
-import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -49,10 +48,9 @@ class UserControllerTest extends AbstractTest {
     autoCloseable = MockitoAnnotations.openMocks(this);
     userController = new UserController(userService, resultService);
 
-    userDto1 = new UserDto(UUID.randomUUID(), "Patrick", Gender.MALE.getValue(), 25);
-    userDto2 = new UserDto(UUID.randomUUID(), "Hannes", Gender.MALE.getValue(), 24);
-    resultDto1 = new ResultDto(UUID.randomUUID(), Timestamp.valueOf("2022-01-01 12:00:00"), userDto1,
-        List.of(4, 4, 4, 4, 4, 4, 4, 4, 4, 4), List.of(4.0, 4.0, 4.0, 4.0, 4.0), 4.0);
+    userDto1 = new UserDto(UUID.randomUUID(), NAME_1, Gender.MALE.getValue(), AGE_1);
+    userDto2 = new UserDto(UUID.randomUUID(), NAME_2, Gender.MALE.getValue(), AGE_2);
+    resultDto1 = new ResultDto(UUID.randomUUID(), TIMESTAMP, userDto1, ANSWERS_2, RESULTS_2, AVG_SCORE_2);
   }
 
   @AfterEach

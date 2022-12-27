@@ -53,15 +53,15 @@ class ResultServiceTest extends AbstractTest {
     autoCloseable = MockitoAnnotations.openMocks(this);
     resultService = new ResultServiceImpl(resultRepository, new UserServiceImpl(userRepository));
 
-    user1 = User.builder().id(UUID.randomUUID()).name("Patrick").gender(Gender.MALE).age(25).build();
+    user1 = User.builder().id(UUID.randomUUID()).name(NAME_1).gender(Gender.MALE).age(AGE_1).build();
     userDto1 = UserMapper.INSTANCE.toDto(user1);
 
-    result1 = Result.builder().id(UUID.randomUUID()).user(user1).answers(List.of(1, 1, 1, 1, 1, 1, 1, 1, 1, 1)).build();
+    result1 = Result.builder().id(UUID.randomUUID()).user(user1).answers(ANSWERS_1).build();
     result1.calculateResults();
     result1.calculateAvgScore();
     resultDto1 = ResultMapper.INSTANCE.toDto(result1);
 
-    result2 = Result.builder().id(UUID.randomUUID()).user(user1).answers(List.of(4, 4, 4, 4, 4, 4, 4, 4, 4, 4)).build();
+    result2 = Result.builder().id(UUID.randomUUID()).user(user1).answers(ANSWERS_2).build();
     result2.calculateResults();
     result2.calculateAvgScore();
     resultDto2 = ResultMapper.INSTANCE.toDto(result2);
