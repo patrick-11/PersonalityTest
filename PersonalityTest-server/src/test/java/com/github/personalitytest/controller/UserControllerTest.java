@@ -7,6 +7,7 @@ import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
 import com.github.personalitytest.service.ResultService;
 import com.github.personalitytest.service.UserService;
+import com.github.personalitytest.type.Gender;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,8 +49,8 @@ class UserControllerTest extends AbstractTest {
     autoCloseable = MockitoAnnotations.openMocks(this);
     userController = new UserController(userService, resultService);
 
-    userDto1 = new UserDto(UUID.randomUUID(), "Patrick", "Male", 25);
-    userDto2 = new UserDto(UUID.randomUUID(), "Hannes", "Male", 24);
+    userDto1 = new UserDto(UUID.randomUUID(), "Patrick", Gender.MALE.getValue(), 25);
+    userDto2 = new UserDto(UUID.randomUUID(), "Hannes", Gender.MALE.getValue(), 24);
     resultDto1 = new ResultDto(UUID.randomUUID(), Timestamp.valueOf("2022-01-01 12:00:00"), userDto1,
         List.of(4, 4, 4, 4, 4, 4, 4, 4, 4, 4), List.of(4.0, 4.0, 4.0, 4.0, 4.0), 4.0);
   }

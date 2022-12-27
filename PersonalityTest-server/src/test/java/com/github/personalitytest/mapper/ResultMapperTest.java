@@ -26,7 +26,7 @@ class ResultMapperTest {
   @BeforeEach
   void setUp() {
     user = new User(UUID.randomUUID(), "Patrick", Gender.MALE, 25, Collections.emptySet());
-    userDto = new UserDto(user.getId(), "Patrick", "Male", 25);
+    userDto = new UserDto(user.getId(), "Patrick", Gender.MALE.getValue(), 25);
     result = new Result(UUID.randomUUID(), Timestamp.valueOf("2022-01-01 12:00:00"), user,
         List.of(4, 4, 4, 4, 4, 4, 4, 4, 4, 4), List.of(4.0, 4.0, 4.0, 4.0, 4.0), 4.0);
     resultDto = new ResultDto(result.getId(), Timestamp.valueOf("2022-01-01 12:00:00"), userDto,

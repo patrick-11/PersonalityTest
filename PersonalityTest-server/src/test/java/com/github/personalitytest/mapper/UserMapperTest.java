@@ -20,7 +20,7 @@ class UserMapperTest {
   @BeforeEach
   void setUp() {
     user = new User(UUID.randomUUID(), "Patrick", Gender.MALE, 25, Collections.emptySet());
-    userDto = new UserDto(user.getId(), "Patrick", "Male", 25);
+    userDto = new UserDto(user.getId(), "Patrick", Gender.MALE.getValue(), 25);
   }
 
   @Test
