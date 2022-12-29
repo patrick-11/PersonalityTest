@@ -44,12 +44,12 @@ public class ResultController implements ControllerBasic<ResultDto> {
 
   @Override
   @Operation(summary = "Create a result")
-  @PostMapping("/{userId}")
+  @PostMapping("/{id}")
   public ResponseEntity<ResultDto> create(@Parameter(description = "Id of user of the result")
-                                          @PathVariable("userId") UUID userId,
+                                          @PathVariable("id") UUID id,
                                           @Parameter(description = "Result of the test")
                                           @Valid @RequestBody ResultDto resultDto) {
-    return new ResponseEntity<>(resultService.create(userId, resultDto), HttpStatus.CREATED);
+    return new ResponseEntity<>(resultService.create(id, resultDto), HttpStatus.CREATED);
   }
 
   @Override

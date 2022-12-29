@@ -52,8 +52,8 @@ public class UserController implements ControllerBasic<UserDto> {
   @Operation(summary = "Create an user")
   @PostMapping("/")
   public ResponseEntity<UserDto> create(@Parameter(description = "User to be created")
-                                        @Valid @RequestBody UserDto user) {
-    return new ResponseEntity<>(userService.create(user), HttpStatus.CREATED);
+                                        @Valid @RequestBody UserDto userDto) {
+    return new ResponseEntity<>(userService.create(userDto), HttpStatus.CREATED);
   }
 
   @Override
@@ -62,8 +62,8 @@ public class UserController implements ControllerBasic<UserDto> {
   public ResponseEntity<UserDto> create(@Parameter(description = "Id of user to be created")
                                         @PathVariable("id") UUID id,
                                         @Parameter(description = "User to be created")
-                                        @Valid @RequestBody UserDto user) {
-    return new ResponseEntity<>(userService.create(id, user), HttpStatus.CREATED);
+                                        @Valid @RequestBody UserDto userDto) {
+    return new ResponseEntity<>(userService.create(id, userDto), HttpStatus.CREATED);
   }
 
   @Override
@@ -72,8 +72,8 @@ public class UserController implements ControllerBasic<UserDto> {
   public ResponseEntity<UserDto> update(@Parameter(description = "Id of user to be updated")
                                         @PathVariable("id") UUID id,
                                         @Parameter(description = "User to be updated")
-                                        @Valid @RequestBody UserDto user) {
-    return new ResponseEntity<>(userService.update(id, user), HttpStatus.OK);
+                                        @Valid @RequestBody UserDto userDto) {
+    return new ResponseEntity<>(userService.update(id, userDto), HttpStatus.OK);
   }
 
   @Override

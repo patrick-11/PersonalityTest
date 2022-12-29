@@ -33,8 +33,8 @@ public class ResultServiceImpl implements ResultService {
   }
 
   @Override
-  public List<ResultDto> getByUserId(UUID userId) {
-    return resultRepository.findByUserId(userId).stream().map(ResultMapper.INSTANCE::toDto).toList();
+  public List<ResultDto> getByUserId(UUID id) {
+    return resultRepository.findByUserId(id).stream().map(ResultMapper.INSTANCE::toDto).toList();
   }
 
   @Override
@@ -73,9 +73,9 @@ public class ResultServiceImpl implements ResultService {
   }
 
   @Override
-  public boolean deleteByUserId(UUID userId) {
-    if (userService.exists(userId)) {
-      getByUserId(userId).forEach(resultDto -> delete(resultDto.getId()));
+  public boolean deleteByUserId(UUID id) {
+    if (userService.exists(id)) {
+      getByUserId(id).forEach(resultDto -> delete(resultDto.getId()));
       return true;
     }
     return false;

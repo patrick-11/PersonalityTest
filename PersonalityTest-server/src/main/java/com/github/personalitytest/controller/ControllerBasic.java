@@ -9,7 +9,7 @@ public interface ControllerBasic<T> {
 
   ResponseEntity<List<T>> getAll();
 
-  ResponseEntity<T> get(UUID uuid);
+  ResponseEntity<T> get(UUID id);
 
   ResponseEntity<T> create(T dto);
 
@@ -17,5 +17,5 @@ public interface ControllerBasic<T> {
 
   ResponseEntity<T> update(UUID uuid, T dto);
 
-  ResponseEntity<Boolean> delete(UUID uuid);
+  ResponseEntity<Boolean> delete(UUID id);
 }
