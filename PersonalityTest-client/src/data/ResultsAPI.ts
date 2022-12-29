@@ -2,7 +2,7 @@ import axios from "axios"
 import type { Result } from "../hooks/reducer/ResultsReducer"
 import { errorCheck } from "../util/Util"
 
-const url = "http://localhost:8080/api/results/"
+const url = "http://localhost:8080/api/v1/results/"
 
 
 export const ResultsAPI = {

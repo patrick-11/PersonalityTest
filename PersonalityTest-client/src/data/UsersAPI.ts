@@ -3,7 +3,7 @@ import type { User } from "../hooks/reducer/UsersReducer"
 import type { Result } from "../hooks/reducer/ResultsReducer"
 import { errorCheck } from "../util/Util"
 
-const url = "http://localhost:8080/api/users/"
+const url = "http://localhost:8080/api/v1/users/"
 
 
 export const UsersAPI = {
