@@ -17,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("api/results")
+@RequestMapping("api/v1/results")
 public class ResultController implements ControllerBasic<ResultDto> {
 
   private final ResultService resultService;

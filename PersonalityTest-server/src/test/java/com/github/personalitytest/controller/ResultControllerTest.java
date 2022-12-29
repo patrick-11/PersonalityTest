@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(ResultController.class)
 class ResultControllerTest extends AbstractTest {
 
-  protected final static String uri = "/api/results/";
+  protected final static String uri = "/api/v1/results/";
   @MockBean
   ResultService resultService;
   ResultController resultController;

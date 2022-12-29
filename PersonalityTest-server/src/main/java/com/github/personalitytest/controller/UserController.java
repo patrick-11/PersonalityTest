@@ -20,7 +20,7 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin
-@RequestMapping("api/users")
+@RequestMapping("api/v1/users")
 public class UserController implements ControllerBasic<UserDto> {
 
   private final UserService userService;

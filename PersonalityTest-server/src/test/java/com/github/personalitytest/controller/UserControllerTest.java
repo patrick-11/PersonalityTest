@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(UserController.class)
 class UserControllerTest extends AbstractTest {
 
-  protected final static String uri = "/api/users/";
+  protected final static String uri = "/api/v1/users/";
   @MockBean
   UserService userService;
   @MockBean
