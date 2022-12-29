@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @WebMvcTest(ResultController.class)
 class ResultControllerTest extends AbstractTest {
 
-  protected final static String uri = "/api/v1/results/";
+  protected final static String URI = "/api/v1/results/";
   @MockBean
   ResultService resultService;
   ResultController resultController;
@@ -60,7 +60,7 @@ class ResultControllerTest extends AbstractTest {
   void getAll_Success() throws Exception {
     when(resultService.getAll()).thenReturn(List.of(resultDto2));
 
-    var mvcResult = mvc.perform(get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var mvcResult = mvc.perform(get(URI).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
@@ -71,7 +71,7 @@ class ResultControllerTest extends AbstractTest {
   void getAll_Empty() throws Exception {
     when(resultService.getAll()).thenReturn(Collections.emptyList());
 
-    var mvcResult = mvc.perform(get(uri).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var mvcResult = mvc.perform(get(URI).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
@@ -82,7 +82,7 @@ class ResultControllerTest extends AbstractTest {
   void get_Success() throws Exception {
     when(resultService.get(ArgumentMatchers.any(UUID.class))).thenReturn(resultDto2);
 
-    var mvcResult = mvc.perform(get(uri + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var mvcResult = mvc.perform(get(URI + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
@@ -94,7 +94,7 @@ class ResultControllerTest extends AbstractTest {
     when(resultService.get(ArgumentMatchers.any(UUID.class)))
         .thenThrow(new NotFoundException(ErrorResponse.RESULT_GET_NOT_FOUND));
 
-    var mvcResult = mvc.perform(get(uri + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var mvcResult = mvc.perform(get(URI + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
@@ -107,7 +107,7 @@ class ResultControllerTest extends AbstractTest {
     when(resultService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenReturn(resultDto1);
 
-    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+    var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(resultDto1)))
@@ -123,7 +123,7 @@ class ResultControllerTest extends AbstractTest {
     when(resultService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenThrow(new NotFoundException(ErrorResponse.USER_GET_NOT_FOUND));
 
-    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+    var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(resultDto1)))
@@ -137,14 +137,14 @@ class ResultControllerTest extends AbstractTest {
 
   @Test
   void create_NoContent() throws Exception {
-    var mvcResult = mvc.perform(post(uri + resultDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var mvcResult = mvc.perform(post(URI + resultDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
   void create_AnswerNull() throws Exception {
     resultDto1.setAnswers(null);
-    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+    var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(resultDto1)))
@@ -159,7 +159,7 @@ class ResultControllerTest extends AbstractTest {
   @Test
   void create_AnswerEmpty() throws Exception {
     resultDto1.setAnswers(Collections.emptyList());
-    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+    var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(resultDto1)))
@@ -176,7 +176,7 @@ class ResultControllerTest extends AbstractTest {
   @Test
   void create_AnswerWrongSize() throws Exception {
     resultDto1.setAnswers(List.of(7, 7, 7, 7, 7, 7, 7, 7, 7));
-    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+    var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(resultDto1)))
@@ -191,7 +191,7 @@ class ResultControllerTest extends AbstractTest {
   @Test
   void create_AnswerWrongValues() throws Exception {
     resultDto1.setAnswers(List.of(8, 8, 8, 8, 8, 8, 8, 8, 8, 8));
-    var mvcResult = mvc.perform(post(uri + userDto1.getId())
+    var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(resultDto1)))
@@ -217,7 +217,7 @@ class ResultControllerTest extends AbstractTest {
     when(resultService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenReturn(resultDto2);
 
-    var mvcResult = mvc.perform(put(uri + resultDto2.getId())
+    var mvcResult = mvc.perform(put(URI + resultDto2.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(resultDto2)))
@@ -230,7 +230,7 @@ class ResultControllerTest extends AbstractTest {
 
   @Test
   void update_NoContent() throws Exception {
-    var mvcResult = mvc.perform(put(uri + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var mvcResult = mvc.perform(put(URI + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
@@ -239,7 +239,7 @@ class ResultControllerTest extends AbstractTest {
     when(resultService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenThrow(new NotFoundException(ErrorResponse.RESULT_UPDATE_NOT_FOUND));
 
-    var mvcResult = mvc.perform(put(uri + resultDto2.getId())
+    var mvcResult = mvc.perform(put(URI + resultDto2.getId())
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
             .content(mapToJson(resultDto2)))
@@ -255,7 +255,7 @@ class ResultControllerTest extends AbstractTest {
   void delete_Success() throws Exception {
     when(resultService.delete(ArgumentMatchers.any(UUID.class))).thenReturn(true);
 
-    var mvcResult = mvc.perform(delete(uri + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var mvcResult = mvc.perform(delete(URI + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.OK.value(), mvcResult.getResponse().getStatus());
@@ -267,7 +267,7 @@ class ResultControllerTest extends AbstractTest {
     when(resultService.delete(ArgumentMatchers.any(UUID.class)))
         .thenThrow(new NotFoundException(ErrorResponse.RESULT_DOES_NOT_EXIST));
 
-    var mvcResult = mvc.perform(delete(uri + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
+    var mvcResult = mvc.perform(delete(URI + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());

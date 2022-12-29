@@ -4,6 +4,7 @@ import com.github.personalitytest.AbstractTest;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
+import com.github.personalitytest.exception.NotValidException;
 import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.model.User;
 import com.github.personalitytest.repository.UserRepository;
@@ -122,6 +123,13 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
+  void createWithId_IdExists() {
+    when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
+    var exception = assertThrows(NotValidException.class, () -> userService.create(userDto1.getId(), userDto1));
+    assertEquals(ErrorResponse.USER_CREATE_ID_FOUND, exception.getMessage());
+  }
+
+  @Test
   void update_Success() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(user1));
@@ -140,8 +148,7 @@ class UserServiceTest extends AbstractTest {
   void update_NotFound() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
-    var exception = assertThrows(
-        NotFoundException.class, () -> userService.update(userDto1.getId(), userDto2));
+    var exception = assertThrows(NotFoundException.class, () -> userService.update(userDto1.getId(), userDto2));
     assertEquals(ErrorResponse.USER_UPDATE_NOT_FOUND, exception.getMessage());
   }
 

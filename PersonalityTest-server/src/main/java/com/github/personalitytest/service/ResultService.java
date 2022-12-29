@@ -10,7 +10,7 @@ import java.util.UUID;
 @Component
 public interface ResultService extends ServiceBasic<ResultDto> {
 
-  List<ResultDto> getByUserId(UUID userId);
+  List<ResultDto> getByUserId(UUID id);
 
-  boolean deleteByUserId(UUID userId);
+  boolean deleteByUserId(UUID id);
 }
