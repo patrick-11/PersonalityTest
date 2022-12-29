@@ -57,16 +57,12 @@ public class UserController implements ControllerBasic<UserDto> {
   }
 
   @Override
-  public ResponseEntity<UserDto> create(UUID uuid, UserDto dto) {
-    return null;
-  }
-
   @Operation(summary = "Create an user by id")
   @PostMapping("/{id}")
-  public ResponseEntity<UserDto> createById(@Parameter(description = "Id of user to be created")
-                                            @PathVariable("id") UUID id,
-                                            @Parameter(description = "User to be created")
-                                            @Valid @RequestBody UserDto user) {
+  public ResponseEntity<UserDto> create(@Parameter(description = "Id of user to be created")
+                                        @PathVariable("id") UUID id,
+                                        @Parameter(description = "User to be created")
+                                        @Valid @RequestBody UserDto user) {
     return new ResponseEntity<>(userService.create(id, user), HttpStatus.CREATED);
   }
 
