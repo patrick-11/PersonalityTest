@@ -19,6 +19,7 @@ public class ErrorResponse {
 
   public static final String USER_GET_NOT_FOUND = "User not found. Fetch was unsuccessful!";
   public static final String RESULT_GET_NOT_FOUND = "Result not found. Fetch was unsuccessful!";
+  public static final String USER_CREATE_ID_FOUND = "User id found. Create was unsuccessful!";
   public static final String USER_UPDATE_NOT_FOUND = "User not found. Update was unsuccessful!";
   public static final String RESULT_UPDATE_NOT_FOUND = "Result not found. Update was unsuccessful!";
 

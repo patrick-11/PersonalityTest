@@ -3,6 +3,7 @@ package com.github.personalitytest.service.impl;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
+import com.github.personalitytest.exception.NotValidException;
 import com.github.personalitytest.mapper.UserMapper;
 import com.github.personalitytest.repository.UserRepository;
 import com.github.personalitytest.service.UserService;
@@ -40,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public UserDto create(UUID id, UserDto userDto) {
+    if (exists(id)) {
+      throw new NotValidException(ErrorResponse.USER_CREATE_ID_FOUND);
+    }
     var user = UserMapper.INSTANCE.toEntity(userDto).toBuilder().id(id).build();
     userRepository.save(user);
     return get(user.getId());
