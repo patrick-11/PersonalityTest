@@ -43,8 +43,8 @@ public class ResultServiceImpl implements ResultService {
   }
 
   @Override
-  public ResultDto create(UUID userId, ResultDto resultDto) {
-    var user = UserMapper.INSTANCE.toEntity(userService.get(userId));
+  public ResultDto create(UUID id, ResultDto resultDto) {
+    var user = UserMapper.INSTANCE.toEntity(userService.get(id));
     var result = ResultMapper.INSTANCE.toEntity(resultDto).toBuilder().id(UUID.randomUUID()).user(user).build();
     result.calculateResults();
     result.calculateAvgScore();
