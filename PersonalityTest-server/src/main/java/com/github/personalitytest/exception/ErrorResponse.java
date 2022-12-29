@@ -28,6 +28,7 @@ public class ErrorResponse {
 
   public static final String USER_VALIDATION_NAME_SIZE_ERROR = "Name is not between 2 and 10 characters long!";
   public static final String USER_VALIDATION_GENDER_ERROR = "Gender is not male or female!";
+  public static final String USER_VALIDATION_AGE_EMPTY_ERROR = "Age may not be empty!";
   public static final String USER_VALIDATION_AGE_SIZE_ERROR = "Age must be between 5 and 120!";
   public static final String RESULT_VALIDATION_ANSWER_SIZE_ERROR = "Answers must have 10 entries!";
   public static final String RESULT_VALIDATION_ANSWER_VALUE_ERROR = "Answers must have a value between 1 and 7!";
