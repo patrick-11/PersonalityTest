@@ -59,7 +59,7 @@ const ResultsTable = (props: ResultsTableInterface) => {
             <th className="text-center">Action</th>
           </tr>
           <tr className="align-middle">
-            <td></td>
+            <td>{results.length}</td>
             {props.details === "high" ?
               <>
                 <td>

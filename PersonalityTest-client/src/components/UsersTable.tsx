@@ -55,7 +55,7 @@ const UsersTable = (props: UsersTableInterface) => {
             <th className="text-center">Action</th>
           </tr>
           <tr className="align-middle">
-            <td></td>
+            <td>{users.length}</td>
             <td>
               <InputGroup>
                 <Form.Control placeholder="Name" type="text" name="name" value={filter.name} onChange={filterUsers}/>
