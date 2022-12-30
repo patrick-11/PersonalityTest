@@ -29,7 +29,7 @@ public class ResultServiceImpl implements ResultService {
   @Override
   public ResultDto get(UUID id) {
     return resultRepository.findById(id).map(ResultMapper.INSTANCE::toDto)
-        .orElseThrow(() -> new NotFoundException(ErrorResponse.RESULT_GET_NOT_FOUND));
+        .orElseThrow(() -> new NotFoundException(ErrorResponse.RESULT_READ_NOT_FOUND));
   }
 
   @Override
@@ -65,27 +65,25 @@ public class ResultServiceImpl implements ResultService {
 
   @Override
   public boolean delete(UUID id) {
-    if (exists(id)) {
-      resultRepository.deleteById(id);
-      return true;
+    if (!exists(id)) {
+      throw new NotFoundException(ErrorResponse.RESULT_DELETE_NOT_FOUND);
     }
-    return false;
+    resultRepository.deleteById(id);
+    return true;
+
   }
 
   @Override
   public boolean deleteByUserId(UUID id) {
-    if (userService.exists(id)) {
-      getByUserId(id).forEach(resultDto -> delete(resultDto.getId()));
-      return true;
+    if (!userService.exists(id)) {
+      throw new NotFoundException(ErrorResponse.USER_DELETE_NOT_FOUND);
     }
-    return false;
+    getByUserId(id).forEach(resultDto -> delete(resultDto.getId()));
+    return true;
   }
 
   @Override
   public boolean exists(UUID id) {
-    if (!resultRepository.existsById(id)) {
-      throw new NotFoundException(ErrorResponse.RESULT_DOES_NOT_EXIST);
-    }
-    return true;
+    return resultRepository.existsById(id);
   }
 }
