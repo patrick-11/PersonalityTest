@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useCallback } from "react"
+import React, { useContext, useReducer, useCallback, useEffect } from "react"
 
 import { Breadcrumb } from "react-bootstrap"
 import { useNavigate, useParams } from "react-router-dom"
@@ -17,14 +17,10 @@ const UsersResults = () => {
   const [results, dispatch] = useReducer(ResultsReducer, [])
 
 
-  const getResultsByUserId = useCallback((userId?: string) => {
-    if(userId !== undefined) {
-      UsersAPI.getUserResults(userId)
+  const getResultsByUserId = useCallback((userId: string) => {
+    UsersAPI.getUserResults(userId)
       .then(response => dispatch(ResultsActions.setResults(response)))
       .catch(error => toastContext.onToastAdd({show: true, title: "Error", message: error, color: "danger"}))
-    } else {
-      toastContext.onToastAdd({show: true, title: "Error", message: "User is undefined!", color: "danger"})
-    }
   }, [toastContext])
 
   const deleteResult = (id: string) => {
@@ -36,6 +32,8 @@ const UsersResults = () => {
       .catch(error => toastContext.onToastAdd({show: true, title: "Error", message: error, color: "danger"}))
   }
 
+  useEffect(() => {getResultsByUserId(params.id!)}, [getResultsByUserId])
+
   return (
     <>
       <Breadcrumb className="align-middle">
@@ -43,7 +41,7 @@ const UsersResults = () => {
         <Breadcrumb.Item active={true}>Results</Breadcrumb.Item>
       </Breadcrumb>
       <hr/>
-      <UsersResultsTable results={results} userId={params.id} getResults={getResultsByUserId} deleteResult={deleteResult}/>
+      <UsersResultsTable results={results} userId={params.id!} getResults={getResultsByUserId} deleteResult={deleteResult}/>
     </>
   )
 }

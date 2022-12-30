@@ -7,8 +7,8 @@ import { Result } from "../hooks/reducer/ResultsReducer"
 
 interface UsersResultsTableInterface {
   results: Array<Result>,
-  userId?: string,
-  getResults: (userId?: string) => void,
+  userId: string,
+  getResults: (userId: string) => void,
   deleteResult: (id: string) => void
  }
 
@@ -27,14 +27,8 @@ const UsersResultsTable = (props: UsersResultsTableInterface) => {
 
   const results = filter !== filterDefault ?
     props.results.filter((result: Result) => {
-      return result.user.name.indexOf(filter.name) !== -1 &&
-        (filter.gender.length === 0 ?
-          result.user.gender === "Male" || result.user.gender === "Female" : result.user.gender === filter.gender
-        ) &&
-        result.user.age >= parseInt(filter.ageMin) &&
-        result.user.age <= parseInt(filter.ageMax) &&
-        result.avgScore >= parseInt(filter.avgScoreMin) &&
-        result.avgScore <= parseInt(filter.avgScoreMax)
+      return result.avgScore >= parseInt(filter.avgScoreMin) && 
+      result.avgScore <= parseInt(filter.avgScoreMax)
     }) : props.results
 
   return (
@@ -65,10 +59,7 @@ const UsersResultsTable = (props: UsersResultsTableInterface) => {
           <td>
             <Stack direction="horizontal" gap={1} className="justify-content-center">
               <Button size="sm" variant="outline-danger" onClick={() => filterReset()}><i className="bi bi-x-lg"/></Button>
-              <Button size="sm" variant="outline-success" onClick={() => {
-                if(props.userId === undefined) {props.getResults()}
-                else {props.getResults(props.userId)}
-              }}><i className="bi bi-arrow-clockwise"/></Button>
+              <Button size="sm" variant="outline-success" onClick={() => props.getResults(props.userId)}><i className="bi bi-arrow-clockwise"/></Button>
             </Stack>
           </td>
         </tr>
