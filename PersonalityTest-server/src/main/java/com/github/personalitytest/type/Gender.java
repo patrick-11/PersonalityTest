@@ -10,8 +10,8 @@ import java.util.Objects;
 @Getter
 public enum Gender {
 
-  MALE("Male"),
-  FEMALE("Female");
+  MALE(Constants.MALE_VALUE),
+  FEMALE(Constants.FEMALE_VALUE);
 
   private final String value;
 
@@ -24,5 +24,12 @@ public enum Gender {
       }
     }
     throw new IllegalArgumentException(ErrorResponse.GENDER_MAPPING_ERROR);
+  }
+
+  public static class Constants {
+    public static final String MALE = "MALE";
+    public static final String FEMALE = "FEMALE";
+    public static final String MALE_VALUE = "Male";
+    public static final String FEMALE_VALUE = "Female";
   }
 }
