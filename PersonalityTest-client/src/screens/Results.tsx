@@ -29,7 +29,7 @@ const Results = () => {
 
   useEffect(() => {getResults()}, [getResults])
 
-  return (<ResultsTable details={"high"} results={results} getResults={getResults} deleteResult={deleteResult}/>)
+  return (<ResultsTable results={results} getResults={getResults} deleteResult={deleteResult}/>)
 }
 
 export default Results

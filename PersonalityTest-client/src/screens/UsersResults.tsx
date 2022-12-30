@@ -7,7 +7,7 @@ import { ResultsReducer } from "../hooks/reducer/ResultsReducer"
 import { ResultsActions } from "../hooks/reducer/actions/ResultsActions"
 import { ResultsAPI } from "../data/ResultsAPI"
 import { UsersAPI } from "../data/UsersAPI"
-import ResultsTable from "../components/ResultsTable"
+import UsersResultsTable from "../components/UsersResultsTable"
 
 
 const UsersResults = () => {
@@ -43,7 +43,7 @@ const UsersResults = () => {
         <Breadcrumb.Item active={true}>Results</Breadcrumb.Item>
       </Breadcrumb>
       <hr/>
-      <ResultsTable details={"low"} results={results} userId={params.id!} getResults={getResultsByUserId} deleteResult={deleteResult}/>
+      <UsersResultsTable results={results} userId={params.id} getResults={getResultsByUserId} deleteResult={deleteResult}/>
     </>
   )
 }
