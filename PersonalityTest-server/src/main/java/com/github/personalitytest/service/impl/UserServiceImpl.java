@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto get(UUID id) {
     return userRepository.findById(id).map(UserMapper.INSTANCE::toDto)
-        .orElseThrow(() -> new NotFoundException(ErrorResponse.USER_GET_NOT_FOUND));
+        .orElseThrow(() -> new NotFoundException(ErrorResponse.USER_READ_NOT_FOUND));
   }
 
   @Override
@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
   @Override
   public UserDto create(UUID id, UserDto userDto) {
     if (exists(id)) {
-      throw new NotValidException(ErrorResponse.USER_CREATE_ID_FOUND);
+      throw new NotValidException(ErrorResponse.USER_CREATE_FOUND);
     }
     var user = UserMapper.INSTANCE.toEntity(userDto).toBuilder().id(id).build();
     userRepository.save(user);
@@ -60,18 +60,15 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public boolean delete(UUID id) {
-    if (exists(id)) {
-      userRepository.deleteById(id);
-      return true;
+    if (!exists(id)) {
+      throw new NotFoundException(ErrorResponse.USER_DELETE_NOT_FOUND);
     }
-    return false;
+    userRepository.deleteById(id);
+    return true;
   }
 
   @Override
   public boolean exists(UUID id) {
-    if (!userRepository.existsById(id)) {
-      throw new NotFoundException(ErrorResponse.USER_DOES_NOT_EXIST);
-    }
-    return true;
+    return userRepository.existsById(id);
   }
 }

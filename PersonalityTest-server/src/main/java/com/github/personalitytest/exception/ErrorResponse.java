@@ -14,14 +14,13 @@ public class ErrorResponse {
   public static final String ENTRY_NOT_FOUND = "Entry not found!";
   public static final String ENTRY_NOT_VALID = "Entry not valid!";
 
-  public static final String USER_DOES_NOT_EXIST = "User does not exist!";
-  public static final String RESULT_DOES_NOT_EXIST = "Result does not exist!";
-
-  public static final String USER_GET_NOT_FOUND = "User not found. Fetch was unsuccessful!";
-  public static final String RESULT_GET_NOT_FOUND = "Result not found. Fetch was unsuccessful!";
-  public static final String USER_CREATE_ID_FOUND = "User id found. Create was unsuccessful!";
+  public static final String USER_READ_NOT_FOUND = "User not found. Read was unsuccessful!";
+  public static final String RESULT_READ_NOT_FOUND = "Result not found. Read was unsuccessful!";
+  public static final String USER_CREATE_FOUND = "User found. Create was unsuccessful!";
   public static final String USER_UPDATE_NOT_FOUND = "User not found. Update was unsuccessful!";
   public static final String RESULT_UPDATE_NOT_FOUND = "Result not found. Update was unsuccessful!";
+  public static final String USER_DELETE_NOT_FOUND = "User not found. Delete was unsuccessful!";
+  public static final String RESULT_DELETE_NOT_FOUND = "Result not found. Delete was unsuccessful!";
 
   public static final String USER_VALIDATION_NAME_EMPTY_ERROR = "Name may not be empty!";
   public static final String USER_VALIDATION_GENDER_EMPTY_ERROR = "Gender may not be empty!";

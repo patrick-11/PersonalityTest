@@ -92,7 +92,7 @@ class UserServiceTest extends AbstractTest {
   void get_NotFound() {
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
     var exception = assertThrows(NotFoundException.class, () -> userService.get(user1.getId()));
-    assertEquals(ErrorResponse.USER_GET_NOT_FOUND, exception.getMessage());
+    assertEquals(ErrorResponse.USER_READ_NOT_FOUND, exception.getMessage());
   }
 
   @Test
@@ -110,6 +110,7 @@ class UserServiceTest extends AbstractTest {
 
   @Test
   void createWithId_Success() {
+    when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(user1));
     var userDto = userService.create(userDto1.getId(), userDto1);
     var captor = ArgumentCaptor.forClass(User.class);
@@ -126,7 +127,7 @@ class UserServiceTest extends AbstractTest {
   void createWithId_IdExists() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     var exception = assertThrows(NotValidException.class, () -> userService.create(userDto1.getId(), userDto1));
-    assertEquals(ErrorResponse.USER_CREATE_ID_FOUND, exception.getMessage());
+    assertEquals(ErrorResponse.USER_CREATE_FOUND, exception.getMessage());
   }
 
   @Test
@@ -162,21 +163,7 @@ class UserServiceTest extends AbstractTest {
   @Test
   void delete_DoesNotExist() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
-    var exception = assertThrows(NotFoundException.class, () -> userService.exists(userDto1.getId()));
-    assertEquals(ErrorResponse.USER_DOES_NOT_EXIST, exception.getMessage());
-  }
-
-  @Test
-  void exists_Success() {
-    when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
-    var userExists = userService.exists(userDto1.getId());
-    assertTrue(userExists);
-  }
-
-  @Test
-  void exists_DoesNotExist() {
-    when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
-    var exception = assertThrows(NotFoundException.class, () -> userService.exists(userDto1.getId()));
-    assertEquals(ErrorResponse.USER_DOES_NOT_EXIST, exception.getMessage());
+    var exception = assertThrows(NotFoundException.class, () -> userService.delete(userDto1.getId()));
+    assertEquals(ErrorResponse.USER_DELETE_NOT_FOUND, exception.getMessage());
   }
 }

@@ -113,7 +113,7 @@ class ResultServiceTest extends AbstractTest {
   void get_NotFound() {
     when(resultRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
     var exception = assertThrows(NotFoundException.class, () -> resultService.get(result1.getId()));
-    assertEquals(ErrorResponse.RESULT_GET_NOT_FOUND, exception.getMessage());
+    assertEquals(ErrorResponse.RESULT_READ_NOT_FOUND, exception.getMessage());
   }
 
   @Test
@@ -158,7 +158,7 @@ class ResultServiceTest extends AbstractTest {
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
     var exception = assertThrows(NotFoundException.class, () ->
         resultService.create(userDto1.getId(), resultDto1));
-    assertEquals(ErrorResponse.USER_GET_NOT_FOUND, exception.getMessage());
+    assertEquals(ErrorResponse.USER_READ_NOT_FOUND, exception.getMessage());
   }
 
   @Test
@@ -201,7 +201,7 @@ class ResultServiceTest extends AbstractTest {
     when(resultRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
     var exception = assertThrows(NotFoundException.class, () ->
         resultService.delete(resultDto1.getId()));
-    assertEquals(ErrorResponse.RESULT_DOES_NOT_EXIST, exception.getMessage());
+    assertEquals(ErrorResponse.RESULT_DELETE_NOT_FOUND, exception.getMessage());
   }
 
   @Test
@@ -216,20 +216,6 @@ class ResultServiceTest extends AbstractTest {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
     var exception = assertThrows(NotFoundException.class, () ->
         resultService.deleteByUserId(userDto1.getId()));
-    assertEquals(ErrorResponse.USER_DOES_NOT_EXIST, exception.getMessage());
-  }
-
-  @Test
-  void exists_Success() {
-    when(resultRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
-    var resultExists = resultService.exists(resultDto1.getId());
-    assertTrue(resultExists);
-  }
-
-  @Test
-  void exists_DoesNotExist() {
-    when(resultRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
-    var exception = assertThrows(NotFoundException.class, () -> resultService.exists(resultDto1.getId()));
-    assertEquals(ErrorResponse.RESULT_DOES_NOT_EXIST, exception.getMessage());
+    assertEquals(ErrorResponse.USER_DELETE_NOT_FOUND, exception.getMessage());
   }
 }
