@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom"
 import { Result } from "../hooks/reducer/ResultsReducer"
 
 
-interface ResultsTableInterface {
+interface UsersResultsTableInterface {
   results: Array<Result>,
-  getResults: () => void,
+  userId: string,
+  getResults: (userId: string) => void,
   deleteResult: (id: string) => void
  }
 
-const ResultsTable = (props: ResultsTableInterface) => {
+const UsersResultsTable = (props: UsersResultsTableInterface) => {
   let navigate = useNavigate()
   const filterDefault = {name: "", gender: "", ageMin: "5", ageMax: "120", avgScoreMin: "1", avgScoreMax: "7"}
   const [filter, setFilter] = useState(filterDefault)
@@ -26,14 +27,8 @@ const ResultsTable = (props: ResultsTableInterface) => {
 
   const results = filter !== filterDefault ?
     props.results.filter((result: Result) => {
-      return result.user.name.indexOf(filter.name) !== -1 &&
-        (filter.gender.length === 0 ?
-          result.user.gender === "Male" || result.user.gender === "Female" : result.user.gender === filter.gender
-        ) &&
-        result.user.age >= parseInt(filter.ageMin) &&
-        result.user.age <= parseInt(filter.ageMax) &&
-        result.avgScore >= parseInt(filter.avgScoreMin) &&
-        result.avgScore <= parseInt(filter.avgScoreMax)
+      return result.avgScore >= parseInt(filter.avgScoreMin) && 
+      result.avgScore <= parseInt(filter.avgScoreMax)
     }) : props.results
 
   return (
@@ -41,41 +36,12 @@ const ResultsTable = (props: ResultsTableInterface) => {
       <thead>
         <tr>
           <th>#</th>
-          <th>Name</th>
-          <th>Gender</th>
-          <th colSpan={4}>Age</th>
           <th>Completed</th>
           <th colSpan={4}>Score</th>
           <th className="text-center">Action</th>
         </tr>
         <tr className="align-middle">
           <td>{results.length}</td>
-          <td>
-            <InputGroup>
-              <Form.Control placeholder="Name" type="text" name="name" value={filter.name} onChange={filterResults}/>
-            </InputGroup>
-          </td>
-          <td className="text-center">
-            <InputGroup>
-              <Form.Select name="gender" value={filter.gender} onChange={filterResults}>
-                <option value="">All</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </Form.Select>
-            </InputGroup>
-          </td>
-          <td className="text-center">{filter.ageMin}</td>
-          <td>
-            <InputGroup>
-              <Form.Range id="ageMin" name="ageMin" step="1" value={filter.ageMin} min="5" max={filter.ageMax} onChange={filterResults}/>
-            </InputGroup>
-          </td>
-          <td>
-            <InputGroup>
-              <Form.Range id="ageMax" name="ageMax" step="1" value={filter.ageMax} min={filter.ageMin} max="120" onChange={filterResults}/>
-            </InputGroup>
-          </td>
-          <td className="text-center">{filter.ageMax}</td>
           <td></td>
           <td className="text-center">{filter.avgScoreMin}</td>
           <td>
@@ -93,7 +59,7 @@ const ResultsTable = (props: ResultsTableInterface) => {
           <td>
             <Stack direction="horizontal" gap={1} className="justify-content-center">
               <Button size="sm" variant="outline-danger" onClick={() => filterReset()}><i className="bi bi-x-lg"/></Button>
-              <Button size="sm" variant="outline-success" onClick={() => props.getResults()}><i className="bi bi-arrow-clockwise"/></Button>
+              <Button size="sm" variant="outline-success" onClick={() => props.getResults(props.userId)}><i className="bi bi-arrow-clockwise"/></Button>
             </Stack>
           </td>
         </tr>
@@ -101,16 +67,13 @@ const ResultsTable = (props: ResultsTableInterface) => {
       <tbody>
         {results.length === 0 ?
           <tr className="text-center">
-            <td colSpan={13}>No results available!</td>
+            <td colSpan={7}>No results available!</td>
           </tr>
           :
           results.map((result: any, index: number) => {
             return (
               <tr key={index}>
                 <td>{index + 1}</td>
-                <td>{result.user.name}</td>
-                <td>{result.user.gender}</td>
-                <td colSpan={4}>{result.user.age}</td>
                 <td>{result.completed}</td>
                 <td colSpan={4}>{result.avgScore}</td>
                 <td className="text-center">
@@ -122,11 +85,10 @@ const ResultsTable = (props: ResultsTableInterface) => {
                 </td>
               </tr>
             )
-          })
-        }
+          })}
       </tbody>
     </Table>
   )
 }
 
-export default ResultsTable
+export default UsersResultsTable
