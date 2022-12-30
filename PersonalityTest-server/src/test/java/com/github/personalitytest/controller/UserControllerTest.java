@@ -94,14 +94,14 @@ class UserControllerTest extends AbstractTest {
   @Test
   void get_NotFound() throws Exception {
     when(userService.get(ArgumentMatchers.any(UUID.class)))
-        .thenThrow(new NotFoundException(ErrorResponse.USER_GET_NOT_FOUND));
+        .thenThrow(new NotFoundException(ErrorResponse.USER_READ_NOT_FOUND));
 
     var mvcResult = mvc.perform(get(URI + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
-        List.of(ErrorResponse.USER_GET_NOT_FOUND))), content);
+        List.of(ErrorResponse.USER_READ_NOT_FOUND))), content);
   }
 
   @Test
@@ -582,14 +582,14 @@ class UserControllerTest extends AbstractTest {
 
   @Test
   void delete_NotFound() throws Exception {
-    when(userService.delete(ArgumentMatchers.any(UUID.class))).thenThrow(new NotFoundException(ErrorResponse.USER_DOES_NOT_EXIST));
+    when(userService.delete(ArgumentMatchers.any(UUID.class))).thenThrow(new NotFoundException(ErrorResponse.USER_DELETE_NOT_FOUND));
 
     var mvcResult = mvc.perform(delete(URI + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
-        List.of(ErrorResponse.USER_DOES_NOT_EXIST))), content);
+        List.of(ErrorResponse.USER_DELETE_NOT_FOUND))), content);
   }
 
   @Test
@@ -606,13 +606,13 @@ class UserControllerTest extends AbstractTest {
   @Test
   void deleteResults_NotFound() throws Exception {
     when(resultService.deleteByUserId(ArgumentMatchers.any(UUID.class)))
-        .thenThrow(new NotFoundException(ErrorResponse.RESULT_DOES_NOT_EXIST));
+        .thenThrow(new NotFoundException(ErrorResponse.RESULT_DELETE_NOT_FOUND));
 
     var mvcResult = mvc.perform(delete(URI + userDto1.getId() + "/results").accept(MediaType.APPLICATION_JSON)).andReturn();
     var content = mvcResult.getResponse().getContentAsString();
 
     assertEquals(HttpStatus.NOT_FOUND.value(), mvcResult.getResponse().getStatus());
     assertEquals(mapToJson(new ErrorResponse(ErrorResponse.ENTRY_NOT_FOUND,
-        List.of(ErrorResponse.RESULT_DOES_NOT_EXIST))), content);
+        List.of(ErrorResponse.RESULT_DELETE_NOT_FOUND))), content);
   }
 }
