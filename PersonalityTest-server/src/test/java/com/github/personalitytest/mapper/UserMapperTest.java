@@ -1,6 +1,6 @@
 package com.github.personalitytest.mapper;
 
-import com.github.personalitytest.AbstractTest;
+import com.github.personalitytest.TestHelper;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.model.User;
 import com.github.personalitytest.type.Gender;
@@ -13,7 +13,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class UserMapperTest extends AbstractTest {
+class UserMapperTest extends TestHelper {
 
   private User user;
   private UserDto userDto;
@@ -25,7 +25,7 @@ class UserMapperTest extends AbstractTest {
   }
 
   @Test
-  void toDto() {
+  void toDto_Valid_ReturnDto() {
     var dto = UserMapper.INSTANCE.toDto(user);
 
     assertThat(dto).isNotNull();
@@ -36,7 +36,7 @@ class UserMapperTest extends AbstractTest {
   }
 
   @Test
-  void toEntity() {
+  void toEntity_Valid_ReturnEntity() {
     var entity = UserMapper.INSTANCE.toEntity(userDto);
 
     assertThat(entity).isNotNull();

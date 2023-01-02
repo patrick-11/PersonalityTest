@@ -1,6 +1,6 @@
 package com.github.personalitytest.service;
 
-import com.github.personalitytest.AbstractTest;
+import com.github.personalitytest.TestHelper;
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-class ResultServiceTest extends AbstractTest {
+class ResultServiceTest extends TestHelper {
 
   @Mock
   ResultRepository resultRepository;
@@ -74,7 +74,7 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void getAll_Success() {
+  void getAll_Valid_ReturnResults() {
     when(resultRepository.findAll()).thenReturn(List.of(result1, result2));
     var resultsDto = resultService.getAll();
 
@@ -83,7 +83,7 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void getAll_Empty() {
+  void getAll_Empty_ReturnNoResults() {
     when(resultRepository.findAll()).thenReturn(Collections.emptyList());
     var resultsDto = resultService.getAll();
 
@@ -92,7 +92,7 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void get_Success() {
+  void get_Valid_ReturnResult() {
     when(resultRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(result1));
     var resultDto = resultService.get(result1.getId());
 
@@ -110,14 +110,14 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void get_NotFound() {
+  void get_NotFound_ThrowException() {
     when(resultRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
     var exception = assertThrows(NotFoundException.class, () -> resultService.get(result1.getId()));
     assertEquals(ErrorResponse.RESULT_READ_NOT_FOUND, exception.getMessage());
   }
 
   @Test
-  void getByUserId_Success() {
+  void getByUserId_Valid_ReturnResults() {
     when(resultRepository.findByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(List.of(result1));
     var resultsDto = resultService.getByUserId(userDto1.getId());
 
@@ -126,7 +126,7 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void getByUserId_NotFound() {
+  void getByUserId_NotFound_ReturnNoResults() {
     when(resultRepository.findByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(Collections.emptyList());
     var resultsDto = resultService.getByUserId(userDto1.getId());
 
@@ -135,7 +135,7 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void create_Success() {
+  void create_Valid_ReturnResult() {
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(user1));
     when(resultRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(result1));
     var resultDto = resultService.create(resultDto1.getUser().getId(), resultDto1);
@@ -154,7 +154,7 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void create_UserNotFound() {
+  void create_UserNotFound_ThrowException() {
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
     var exception = assertThrows(NotFoundException.class, () ->
         resultService.create(userDto1.getId(), resultDto1));
@@ -162,7 +162,7 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void update_Success() {
+  void update_Valid_ReturnResult() {
     when(resultRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     when(resultRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(result1));
     var resultDto = resultService.update(resultDto1.getId(), resultDto2);
@@ -182,7 +182,7 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void update_NotFound() {
+  void update_NotFound_ThrowException() {
     when(resultRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
     var exception = assertThrows(NotFoundException.class, () ->
         resultService.update(resultDto1.getId(), resultDto1));
@@ -190,14 +190,14 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void delete_Success() {
+  void delete_Valid_ReturnTrue() {
     when(resultRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     boolean resultDeleted = resultService.delete(resultDto1.getId());
     assertTrue(resultDeleted);
   }
 
   @Test
-  void delete_DoesNotExist() {
+  void delete_NotFound_ThrowException() {
     when(resultRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
     var exception = assertThrows(NotFoundException.class, () ->
         resultService.delete(resultDto1.getId()));
@@ -205,14 +205,14 @@ class ResultServiceTest extends AbstractTest {
   }
 
   @Test
-  void deleteByUserId() {
+  void deleteByUserId_Valid_ReturnTrue() {
     when(resultRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     var resultDeleted = resultService.delete(userDto1.getId());
     assertTrue(resultDeleted);
   }
 
   @Test
-  void deleteByUserId_UserDoesNotExist() {
+  void deleteByUserId_UserNotFound_ThrowException() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
     var exception = assertThrows(NotFoundException.class, () ->
         resultService.deleteByUserId(userDto1.getId()));

@@ -1,6 +1,6 @@
 package com.github.personalitytest.service;
 
-import com.github.personalitytest.AbstractTest;
+import com.github.personalitytest.TestHelper;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
 import com.github.personalitytest.exception.NotFoundException;
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 
-class UserServiceTest extends AbstractTest {
+class UserServiceTest extends TestHelper {
 
   @Mock
   UserRepository userRepository;
@@ -58,7 +58,7 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  void getAll_Success() {
+  void getAll_Valid_ReturnUsers() {
     when(userRepository.findAll()).thenReturn(List.of(user1, user2));
     var usersDto = userService.getAll();
 
@@ -67,7 +67,7 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  void getAll_Empty() {
+  void getAll_Empty_ReturnNoUsers() {
     when(userRepository.findAll()).thenReturn(Collections.emptyList());
     var usersDto = userService.getAll();
 
@@ -76,7 +76,7 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  void get_Success() {
+  void get_Valid_ReturnUser() {
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(user1));
     var userDto = userService.get(user1.getId());
 
@@ -89,14 +89,14 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  void get_NotFound() {
+  void get_NotFound_ThrowException() {
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
     var exception = assertThrows(NotFoundException.class, () -> userService.get(user1.getId()));
     assertEquals(ErrorResponse.USER_READ_NOT_FOUND, exception.getMessage());
   }
 
   @Test
-  void create_Success() {
+  void create_Valid_ReturnUser() {
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(user1));
     var userDto = userService.create(userDto1);
     var captor = ArgumentCaptor.forClass(User.class);
@@ -109,7 +109,7 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  void createWithId_Success() {
+  void createWithId_Valid_ReturnUser() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(user1));
     var userDto = userService.create(userDto1.getId(), userDto1);
@@ -124,14 +124,14 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  void createWithId_IdExists() {
+  void createWithId_IdExists_ThrowException() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     var exception = assertThrows(NotValidException.class, () -> userService.create(userDto1.getId(), userDto1));
     assertEquals(ErrorResponse.USER_CREATE_FOUND, exception.getMessage());
   }
 
   @Test
-  void update_Success() {
+  void update_Valid_ReturnUser() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.of(user1));
     var userDto = userService.update(userDto1.getId(), userDto2);
@@ -146,7 +146,7 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  void update_NotFound() {
+  void update_NotFound_ThrowException() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     when(userRepository.findById(ArgumentMatchers.any(UUID.class))).thenReturn(Optional.empty());
     var exception = assertThrows(NotFoundException.class, () -> userService.update(userDto1.getId(), userDto2));
@@ -154,14 +154,14 @@ class UserServiceTest extends AbstractTest {
   }
 
   @Test
-  void delete_Success() {
+  void delete_Valid_ReturnTrue() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(true);
     var userDeleted = userService.delete(userDto1.getId());
     assertTrue(userDeleted);
   }
 
   @Test
-  void delete_DoesNotExist() {
+  void delete_NotFound_ThrowException() {
     when(userRepository.existsById(ArgumentMatchers.any(UUID.class))).thenReturn(false);
     var exception = assertThrows(NotFoundException.class, () -> userService.delete(userDto1.getId()));
     assertEquals(ErrorResponse.USER_DELETE_NOT_FOUND, exception.getMessage());
