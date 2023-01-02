@@ -1,6 +1,6 @@
 package com.github.personalitytest.controller;
 
-import com.github.personalitytest.AbstractTest;
+import com.github.personalitytest.TestHelper;
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 
 @WebMvcTest(ResultController.class)
-class ResultControllerTest extends AbstractTest {
+class ResultControllerTest extends TestHelper {
 
   protected final static String URI = "/api/v1/results/";
   @MockBean
@@ -57,7 +57,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void getAll_Success() throws Exception {
+  void getAll_Valid_ReturnResults() throws Exception {
     when(resultService.getAll()).thenReturn(List.of(resultDto2));
 
     var mvcResult = mvc.perform(get(URI).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -68,7 +68,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void getAll_Empty() throws Exception {
+  void getAll_Empty_ReturnNoResults() throws Exception {
     when(resultService.getAll()).thenReturn(Collections.emptyList());
 
     var mvcResult = mvc.perform(get(URI).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -79,7 +79,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void get_Success() throws Exception {
+  void get_Valid_ReturnResult() throws Exception {
     when(resultService.get(ArgumentMatchers.any(UUID.class))).thenReturn(resultDto2);
 
     var mvcResult = mvc.perform(get(URI + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -90,7 +90,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void get_NotFound() throws Exception {
+  void get_NotFound_ReturnErrorResponse() throws Exception {
     when(resultService.get(ArgumentMatchers.any(UUID.class)))
         .thenThrow(new NotFoundException(ErrorResponse.RESULT_READ_NOT_FOUND));
 
@@ -103,7 +103,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_Success() throws Exception {
+  void create_Valid_ReturnResult() throws Exception {
     when(resultService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenReturn(resultDto1);
 
@@ -119,7 +119,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_UserNotFound() throws Exception {
+  void create_UserNotFound_ReturnErrorResponse() throws Exception {
     when(resultService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenThrow(new NotFoundException(ErrorResponse.USER_READ_NOT_FOUND));
 
@@ -136,13 +136,13 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_NoContent() throws Exception {
+  void create_NoContent_ThrowException() throws Exception {
     var mvcResult = mvc.perform(post(URI + resultDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
-  void create_AnswerNull() throws Exception {
+  void create_AnswerNull_ReturnErrorResponse() throws Exception {
     resultDto1.setAnswers(null);
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -157,7 +157,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_AnswerEmpty() throws Exception {
+  void create_AnswerEmpty_ReturnErrorResponse() throws Exception {
     resultDto1.setAnswers(Collections.emptyList());
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -174,7 +174,7 @@ class ResultControllerTest extends AbstractTest {
 
 
   @Test
-  void create_AnswerWrongSize() throws Exception {
+  void create_AnswerWrongSize_ReturnErrorResponse() throws Exception {
     resultDto1.setAnswers(List.of(7, 7, 7, 7, 7, 7, 7, 7, 7));
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -189,7 +189,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_AnswerWrongValues() throws Exception {
+  void create_AnswerWrongValues_ReturnErrorResponse() throws Exception {
     resultDto1.setAnswers(List.of(8, 8, 8, 8, 8, 8, 8, 8, 8, 8));
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -213,7 +213,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_Success() throws Exception {
+  void update_Valid_ReturnResult() throws Exception {
     when(resultService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenReturn(resultDto2);
 
@@ -229,13 +229,13 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_NoContent() throws Exception {
+  void update_NoContent_ThrowException() throws Exception {
     var mvcResult = mvc.perform(put(URI + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
-  void update_NotFound() throws Exception {
+  void update_NotFound_ReturnErrorResponse() throws Exception {
     when(resultService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(ResultDto.class)))
         .thenThrow(new NotFoundException(ErrorResponse.RESULT_UPDATE_NOT_FOUND));
 
@@ -252,7 +252,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void delete_Success() throws Exception {
+  void delete_Valid_ReturnTrue() throws Exception {
     when(resultService.delete(ArgumentMatchers.any(UUID.class))).thenReturn(true);
 
     var mvcResult = mvc.perform(delete(URI + resultDto2.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -263,7 +263,7 @@ class ResultControllerTest extends AbstractTest {
   }
 
   @Test
-  void delete_NotFound() throws Exception {
+  void delete_NotFound_ReturnErrorResponse() throws Exception {
     when(resultService.delete(ArgumentMatchers.any(UUID.class)))
         .thenThrow(new NotFoundException(ErrorResponse.RESULT_DELETE_NOT_FOUND));
 

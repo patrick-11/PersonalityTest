@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 
-public abstract class AbstractTest {
+public abstract class TestHelper {
 
   protected final String NAME_1 = "Patrick";
   protected final String NAME_2 = "Hannes";

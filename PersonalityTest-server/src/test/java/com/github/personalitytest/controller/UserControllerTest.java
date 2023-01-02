@@ -1,6 +1,6 @@
 package com.github.personalitytest.controller;
 
-import com.github.personalitytest.AbstractTest;
+import com.github.personalitytest.TestHelper;
 import com.github.personalitytest.dto.ResultDto;
 import com.github.personalitytest.dto.UserDto;
 import com.github.personalitytest.exception.ErrorResponse;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 
 @WebMvcTest(UserController.class)
-class UserControllerTest extends AbstractTest {
+class UserControllerTest extends TestHelper {
 
   protected final static String URI = "/api/v1/users/";
   @MockBean
@@ -59,7 +59,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void getAll_Success() throws Exception {
+  void getAll_Valid_ReturnUsers() throws Exception {
     when(userService.getAll()).thenReturn(List.of(userDto1, userDto2));
 
     var mvcResult = mvc.perform(get(URI).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -70,7 +70,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void getAll_Empty() throws Exception {
+  void getAll_Empty_ReturnNoUsers() throws Exception {
     when(userService.getAll()).thenReturn(Collections.emptyList());
 
     var mvcResult = mvc.perform(get(URI).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -81,7 +81,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void get_Success() throws Exception {
+  void get_Valid_ReturnUser() throws Exception {
     when(userService.get(ArgumentMatchers.any(UUID.class))).thenReturn(userDto1);
 
     var mvcResult = mvc.perform(get(URI + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -92,7 +92,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void get_NotFound() throws Exception {
+  void get_NotFound_ReturnErrorResponse() throws Exception {
     when(userService.get(ArgumentMatchers.any(UUID.class)))
         .thenThrow(new NotFoundException(ErrorResponse.USER_READ_NOT_FOUND));
 
@@ -105,7 +105,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void getResults_Success() throws Exception {
+  void getResults_Valid_ReturnUser() throws Exception {
     when(resultService.getByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(List.of(resultDto1));
 
     var mvcResult = mvc.perform(get(URI + userDto1.getId() + "/results")
@@ -117,7 +117,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void getResults_Empty() throws Exception {
+  void getResults_Empty_ReturnNoUser() throws Exception {
     when(resultService.getByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(Collections.emptyList());
 
     var mvcResult = mvc.perform(get(URI + userDto1.getId() + "/results")
@@ -130,7 +130,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_Success() throws Exception {
+  void create_Valid_ReturnUser() throws Exception {
     when(userService.create(ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
 
     var mvcResult = mvc.perform(post(URI)
@@ -145,13 +145,13 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_NoContent() throws Exception {
+  void create_NoContent_ThrowException() throws Exception {
     var mvcResult = mvc.perform(post(URI).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
-  void create_NameNull() throws Exception {
+  void create_NameNull_ReturnErrorResponse() throws Exception {
     userDto1.setName(null);
     var mvcResult = mvc.perform(post(URI)
             .accept(MediaType.APPLICATION_JSON)
@@ -166,7 +166,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_NameEmpty() throws Exception {
+  void create_NameEmpty_ReturnErrorResponse() throws Exception {
     userDto1.setName("");
     var mvcResult = mvc.perform(post(URI)
             .accept(MediaType.APPLICATION_JSON)
@@ -181,7 +181,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_NameWrongSize() throws Exception {
+  void create_NameWrongSize_ReturnErrorResponse() throws Exception {
     userDto1.setName("T");
     var mvcResult = mvc.perform(post(URI)
             .accept(MediaType.APPLICATION_JSON)
@@ -196,7 +196,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_GenderNull() throws Exception {
+  void create_GenderNull_ReturnErrorResponse() throws Exception {
     userDto1.setGender(null);
     var mvcResult = mvc.perform(post(URI)
             .accept(MediaType.APPLICATION_JSON)
@@ -211,7 +211,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_GenderEmpty() throws Exception {
+  void create_GenderEmpty_ReturnErrorResponse() throws Exception {
     userDto1.setGender("");
     var mvcResult = mvc.perform(post(URI)
             .accept(MediaType.APPLICATION_JSON)
@@ -226,7 +226,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_GenderNotExisting() throws Exception {
+  void create_GenderNotExisting_ReturnErrorResponse() throws Exception {
     userDto1.setGender("Non-Binary");
     var mvcResult = mvc.perform(post(URI)
             .accept(MediaType.APPLICATION_JSON)
@@ -241,7 +241,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_AgeSmaller() throws Exception {
+  void create_AgeSmaller_ReturnErrorResponse() throws Exception {
     userDto1.setAge(4);
     var mvcResult = mvc.perform(post(URI)
             .accept(MediaType.APPLICATION_JSON)
@@ -256,7 +256,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void create_AgeGreater() throws Exception {
+  void create_AgeGreater_ReturnErrorResponse() throws Exception {
     userDto1.setAge(121);
     var mvcResult = mvc.perform(post(URI)
             .accept(MediaType.APPLICATION_JSON)
@@ -271,7 +271,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_Success() throws Exception {
+  void createById_Valid_ReturnUser() throws Exception {
     when(userService.create(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
 
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
@@ -286,13 +286,13 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_NoContent() throws Exception {
+  void createById_NoContent_ThrowException() throws Exception {
     var mvcResult = mvc.perform(post(URI + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
-  void createById_NameNull() throws Exception {
+  void createById_NameNull_ReturnErrorResponse() throws Exception {
     userDto1.setName(null);
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -307,7 +307,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_NameEmpty() throws Exception {
+  void createById_NameEmpty_ReturnErrorResponse() throws Exception {
     userDto1.setName("");
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -322,7 +322,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_NameWrongSize() throws Exception {
+  void createById_NameWrongSize_ReturnErrorResponse() throws Exception {
     userDto1.setName("T");
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -337,7 +337,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_GenderNull() throws Exception {
+  void createById_GenderNull_ReturnErrorResponse() throws Exception {
     userDto1.setGender(null);
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -352,7 +352,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_GenderEmpty() throws Exception {
+  void createById_GenderEmpty_ReturnErrorResponse() throws Exception {
     userDto1.setGender("");
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -367,7 +367,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_GenderNotExisting() throws Exception {
+  void createById_GenderNotExisting_ReturnErrorResponse() throws Exception {
     userDto1.setGender("Non-Binary");
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -382,7 +382,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_AgeSmaller() throws Exception {
+  void createById_AgeSmaller_ReturnErrorResponse() throws Exception {
     userDto1.setAge(4);
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -397,7 +397,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void createById_AgeGreater() throws Exception {
+  void createById_AgeGreater_ReturnErrorResponse() throws Exception {
     userDto1.setAge(121);
     var mvcResult = mvc.perform(post(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -412,7 +412,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_Success() throws Exception {
+  void update_Valid_ReturnUser() throws Exception {
     when(userService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class))).thenReturn(userDto1);
 
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
@@ -427,13 +427,13 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_NoContent() throws Exception {
+  void update_NoContent_ThrowException() throws Exception {
     var mvcResult = mvc.perform(put(URI + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
     assertEquals(HttpStatus.BAD_REQUEST.value(), mvcResult.getResponse().getStatus());
   }
 
   @Test
-  void update_NameNull() throws Exception {
+  void update_NameNull_ReturnErrorResponse() throws Exception {
     userDto1.setName(null);
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -448,7 +448,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_NameEmpty() throws Exception {
+  void update_NameEmpty_ReturnErrorResponse() throws Exception {
     userDto1.setName("");
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -463,7 +463,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_NameWrongSize() throws Exception {
+  void update_NameWrongSize_ReturnErrorResponse() throws Exception {
     userDto1.setName("T");
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -478,7 +478,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_GenderNull() throws Exception {
+  void update_GenderNull_ReturnErrorResponse() throws Exception {
     userDto1.setGender(null);
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -493,7 +493,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_GenderEmpty() throws Exception {
+  void update_GenderEmpty_ReturnErrorResponse() throws Exception {
     userDto1.setGender("");
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -508,7 +508,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_GenderNotExisting() throws Exception {
+  void update_GenderNotExisting_ReturnErrorResponse() throws Exception {
     userDto1.setGender("Non-Binary");
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -523,7 +523,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_AgeSmaller() throws Exception {
+  void update_AgeSmaller_ReturnErrorResponse() throws Exception {
     userDto1.setAge(4);
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -538,7 +538,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_AgeGreater() throws Exception {
+  void update_AgeGreater_ReturnErrorResponse() throws Exception {
     userDto1.setAge(121);
     var mvcResult = mvc.perform(put(URI + userDto1.getId())
             .accept(MediaType.APPLICATION_JSON)
@@ -553,7 +553,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void update_NotFound() throws Exception {
+  void update_NotFound_ReturnErrorResponse() throws Exception {
     when(userService.update(ArgumentMatchers.any(UUID.class), ArgumentMatchers.any(UserDto.class)))
         .thenThrow(new NotFoundException(ErrorResponse.USER_UPDATE_NOT_FOUND));
 
@@ -570,7 +570,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void delete_Success() throws Exception {
+  void delete_Valid_ReturnTrue() throws Exception {
     when(userService.delete(ArgumentMatchers.any(UUID.class))).thenReturn(true);
 
     var mvcResult = mvc.perform(delete(URI + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -581,7 +581,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void delete_NotFound() throws Exception {
+  void delete_NotFound_ReturnErrorResponse() throws Exception {
     when(userService.delete(ArgumentMatchers.any(UUID.class))).thenThrow(new NotFoundException(ErrorResponse.USER_DELETE_NOT_FOUND));
 
     var mvcResult = mvc.perform(delete(URI + userDto1.getId()).accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -593,7 +593,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void deleteResults_Success() throws Exception {
+  void deleteResults_Valid_ReturnTrue() throws Exception {
     when(resultService.deleteByUserId(ArgumentMatchers.any(UUID.class))).thenReturn(true);
 
     var mvcResult = mvc.perform(delete(URI + userDto1.getId() + "/results").accept(MediaType.APPLICATION_JSON)).andReturn();
@@ -604,7 +604,7 @@ class UserControllerTest extends AbstractTest {
   }
 
   @Test
-  void deleteResults_NotFound() throws Exception {
+  void deleteResults_NotFound_ReturnErrorResponse() throws Exception {
     when(resultService.deleteByUserId(ArgumentMatchers.any(UUID.class)))
         .thenThrow(new NotFoundException(ErrorResponse.RESULT_DELETE_NOT_FOUND));
 
